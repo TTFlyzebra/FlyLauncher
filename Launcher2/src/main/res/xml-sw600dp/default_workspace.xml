@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2012 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<favorites xmlns:launcher="http://schemas.android.com/apk/res-auto">
+    <!-- Far-left screen [0] -->
+
+    <!-- Left screen [1] -->
+    <appwidget
+        launcher:className="com.autochips.weather.WeatherProvider"
+        launcher:packageName="com.autochips.weather"
+        launcher:screen="2"
+        launcher:spanX="6"
+        launcher:spanY="1"
+        launcher:x="0"
+        launcher:y="0" />
+        
+    <favorite
+        launcher:packageName="com.autochips.HDMI"
+        launcher:className="com.autochips.HDMI.HDMIActivity"
+        launcher:screen="2"
+        launcher:x="0"
+        launcher:y="1" />
+
+    <favorite
+        launcher:packageName="com.autochips.AVInput"
+        launcher:className="com.autochips.AVInput.AVInputActivity"
+        launcher:screen="2"
+        launcher:x="1"
+        launcher:y="1" />
+
+    <favorite
+        launcher:packageName="com.autochips.dvdplayer"
+        launcher:className="com.autochips.dvdplayer.DvdHomeActivity"
+        launcher:screen="2"
+        launcher:x="2"
+        launcher:y="1" />
+
+    <favorite
+        launcher:packageName="com.autochips.ipodplayer"
+        launcher:className="com.autochips.ipodplayer.MainActivity"
+        launcher:screen="2"
+        launcher:x="3"
+        launcher:y="1" />
+
+    <favorite
+        launcher:packageName="com.autochips.dvr"
+        launcher:className="com.autochips.dvr.MainActivity"
+        launcher:screen="2"
+        launcher:x="4"
+        launcher:y="1" />
+        
+    <favorite
+        launcher:packageName="com.android.browser"
+        launcher:className="com.android.browser.BrowserActivity"
+        launcher:screen="2"
+        launcher:x="5"
+        launcher:y="1" />
+
+    <!-- Hotseat (We use the screen as the position of the item in the hotseat) -->
+
+    <!-- maps 
+    <favorite
+        launcher:className="com.autonavi.map.activity.SplashActivity"
+        launcher:container="-101"
+        launcher:packageName="com.autonavi.minimap"
+        launcher:screen="0"
+        launcher:x="0"
+        launcher:y="0" /> -->
+    
+    <favorite
+        launcher:className="com.autonavi.auto.remote.fill.UsbFillActivity"
+        launcher:container="-101"
+        launcher:packageName="com.autonavi.amapauto"
+        launcher:screen="0"
+        launcher:x="0"
+        launcher:y="0" />
+    <!-- bt -->
+    <favorite
+        launcher:className="com.autochips.bluetooth.MainBluetoothActivity"
+        launcher:container="-101"
+        launcher:packageName="com.autochips.bluetooth"
+        launcher:screen="1"
+        launcher:x="1"
+        launcher:y="0" />
+
+    <!-- music -->
+    <favorite
+        launcher:className="com.android.music.MusicBrowserActivity"
+        launcher:container="-101"
+        launcher:packageName="com.android.music"
+        launcher:screen="2"
+        launcher:x="2"
+        launcher:y="0" />
+
+    <!-- gallery -->
+    <favorite
+        launcher:packageName="com.android.gallery3d"
+        launcher:container="-101"
+        launcher:className="com.android.gallery3d.app.GalleryActivity"
+        launcher:screen="3"
+        launcher:x="3"
+        launcher:y="0" />
+
+    <!-- es filebrowse -->  
+    <favorite
+        launcher:packageName="com.estrongs.android.pop"
+        launcher:container="-101"
+        launcher:className="com.estrongs.android.pop.view.FileExplorerActivity"
+        launcher:screen="4"
+        launcher:x="4"
+        launcher:y="0" />
+        
+    <!-- setting -->  
+    <favorite
+        launcher:packageName="com.android.settings"
+        launcher:container="-101"
+        launcher:className="com.ATCSetting.mainui.MainActivity"
+        launcher:screen="5"
+        launcher:x="5"
+        launcher:y="0" />
+</favorites>
