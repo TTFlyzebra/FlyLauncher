@@ -35,6 +35,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -380,7 +381,7 @@ public class IconCache {
         }
         if (entry == null) {
             entry = new CacheEntry();
-            entry.icon = Utilities.createIconBitmap(app.getBadgedIcon(mIconDpi), mContext);
+            entry.icon = Utilities.create3rdIconBitmap(app.getBadgedIcon(mIconDpi), mContext);
         }
         entry.title = app.getLabel();
         entry.contentDescription = mUserManager.getBadgedLabelForUser(entry.title, app.getUser());
@@ -542,7 +543,7 @@ public class IconCache {
             // Check the DB first.
             if (!getEntryFromDB(cacheKey, entry, useLowResIcon)) {
                 if (info != null) {
-                    entry.icon = Utilities.createIconBitmap(info.getBadgedIcon(mIconDpi), mContext);
+                    entry.icon = Utilities.create3rdIconBitmap(info.getBadgedIcon(mIconDpi), mContext);
                 } else {
                     if (usePackageIcon) {
                         CacheEntry packageEntry = getEntryForPackageLocked(
@@ -625,17 +626,15 @@ public class IconCache {
                     }
                     Drawable drawable = mUserManager.getBadgedDrawableForUser(
                             appInfo.loadIcon(mPackageManager), user);
-                    entry.icon = Utilities.createIconBitmap(drawable, mContext);
+                    entry.icon = Utilities.create3rdIconBitmap(drawable, mContext);
                     entry.title = appInfo.loadLabel(mPackageManager);
                     entry.contentDescription = mUserManager.getBadgedLabelForUser(entry.title, user);
                     entry.isLowResIcon = false;
 
                     // Add the icon in the DB here, since these do not get written during
                     // package updates.
-                    ContentValues values =
-                            newContentValues(entry.icon, entry.title.toString(), mPackageBgColor);
-                    addIconToDB(values, cacheKey.componentName, info,
-                            mUserManager.getSerialNumberForUser(user));
+                    ContentValues values = newContentValues(entry.icon, entry.title.toString(), mPackageBgColor);
+                    addIconToDB(values, cacheKey.componentName, info, mUserManager.getSerialNumberForUser(user));
 
                 } catch (NameNotFoundException e) {
                     if (DEBUG) Log.d(TAG, "Application not installed " + packageName);

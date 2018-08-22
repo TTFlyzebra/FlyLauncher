@@ -21,6 +21,7 @@ import android.content.Context;
 import android.graphics.Point;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
@@ -100,7 +101,6 @@ public class InvariantDeviceProfile {
         if (hs % 2 == 0) {
             throw new RuntimeException("All Device Profiles must have an odd number of hotseat spaces");
         }
-
         name = n;
         minWidthDps = w;
         minHeightDps = h;
@@ -114,8 +114,18 @@ public class InvariantDeviceProfile {
         numHotseatIcons = 1.0f;
         hotseatIconSize = his;
         defaultLayoutId = dlId;
-
-
+        Log.i("flyzebra","name="+name+
+                ",minWidthDps="+minWidthDps+
+                ",minHeightDps="+minHeightDps+
+                ",numRows="+numRows+
+                ",numColumns="+numColumns+
+                ",numFolderRows="+numFolderRows+
+                ",numFolderColumns="+numFolderColumns+
+                ",minAllAppsPredictionColumns="+minAllAppsPredictionColumns+
+                ",iconSize="+iconSize+
+                ",numHotseatIcons="+numHotseatIcons+
+                ",hotseatIconSize="+hotseatIconSize+
+                ",defaultLayoutId="+defaultLayoutId);
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)

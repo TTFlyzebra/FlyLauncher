@@ -47,8 +47,7 @@
             android:id="@+id/hotseat"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:visibility="gone"/>
+            android:layout_gravity="right"/>
 
         <include
             android:id="@+id/search_drop_target_bar"
