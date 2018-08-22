@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.android.launcher3.util.FlyLog;
 import com.android.launcher3.util.Thunk;
 
 import java.util.ArrayList;
@@ -104,17 +105,17 @@ public class InvariantDeviceProfile {
         name = n;
         minWidthDps = w;
         minHeightDps = h;
-        numRows = 3;
-        numColumns = 6;
+        numRows = r;
+        numColumns = c;
         numFolderRows = fr;
         numFolderColumns = fc;
         minAllAppsPredictionColumns = maapc;
         iconSize = is;
         iconTextSize = its;
-        numHotseatIcons = 1.0f;
+        numHotseatIcons = hs;
         hotseatIconSize = his;
         defaultLayoutId = dlId;
-        Log.i("flyzebra","name="+name+
+        FlyLog.d("flyzebra","name="+name+
                 ",minWidthDps="+minWidthDps+
                 ",minHeightDps="+minHeightDps+
                 ",numRows="+numRows+
@@ -159,6 +160,8 @@ public class InvariantDeviceProfile {
         minAllAppsPredictionColumns = closestProfile.minAllAppsPredictionColumns;
 
         iconSize = interpolatedDeviceProfileOut.iconSize;
+        FlyLog.d("iconSize=%f",iconSize);
+
         iconBitmapSize = Utilities.pxFromDp(iconSize, dm);
         iconTextSize = interpolatedDeviceProfileOut.iconTextSize;
         hotseatIconSize = interpolatedDeviceProfileOut.hotseatIconSize;
@@ -199,6 +202,10 @@ public class InvariantDeviceProfile {
                 335, 567,     4, 4, 4, 4, 4, DEFAULT_ICON_SIZE_DP, 13, 5, 56, R.xml.default_workspace_4x4));
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("Nexus 5",
                 359, 567,     4, 4, 4, 4, 4, DEFAULT_ICON_SIZE_DP, 13, 5, 56, R.xml.default_workspace_4x4));
+
+        //ADD Jancar
+        predefinedDeviceProfiles.add(new InvariantDeviceProfile("JarCar",
+                400, 682,     3, 6, 4, 4, 4, 72, 14.4f,  1, 72, R.xml.default_workspace_5x6));
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("Large Phone",
                 406, 694,     5, 5, 4, 4, 4, 64, 14.4f,  5, 56, R.xml.default_workspace_5x5));
         // The tablet profile is odd in that the landscape orientation

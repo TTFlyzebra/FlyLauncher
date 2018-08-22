@@ -1,4 +1,4 @@
-package com.jancar.launcher.view;
+package com.jancar.launcher.jancarview;
 
 import android.content.Context;
 import android.util.AttributeSet;

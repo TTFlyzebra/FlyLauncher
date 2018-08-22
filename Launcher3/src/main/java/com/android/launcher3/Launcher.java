@@ -520,8 +520,9 @@ public class Launcher extends Activity
             showIntroScreen();
         } else {
             showFirstRunActivity();
+            showFirstRunClings();
         }
-        showFirstRunClings();
+
     }
 
     @Override
@@ -2071,6 +2072,7 @@ public class Launcher extends Activity
         }
     }
 
+
     /**
      * Indicates that we want global search for this activity by setting the globalSearch
      * argument for {@link #startSearch} to true.
@@ -2430,34 +2432,35 @@ public class Launcher extends Activity
 
     @Override
     public void onBackPressed() {
-        if (mLauncherCallbacks != null && mLauncherCallbacks.handleBackPressed()) {
-            return;
-        }
-
-        if (mDragController.isDragging()) {
-            mDragController.cancelDrag();
-            return;
-        }
-
-        if (isAppsViewVisible()) {
-            showWorkspace(true);
-        } else if (isWidgetsViewVisible())  {
-            showOverviewMode(true);
-        } else if (mWorkspace.isInOverviewMode()) {
-            showWorkspace(true);
-        } else if (mWorkspace.getOpenFolder() != null) {
-            Folder openFolder = mWorkspace.getOpenFolder();
-            if (openFolder.isEditingName()) {
-                openFolder.dismissEditingName();
-            } else {
-                closeFolder();
-            }
-        } else {
-            mWorkspace.exitWidgetResizeMode();
-
-            // Back button is a no-op here, but give at least some feedback for the button press
-            mWorkspace.showOutlinesTemporarily();
-        }
+        super.onBackPressed();
+//        if (mLauncherCallbacks != null && mLauncherCallbacks.handleBackPressed()) {
+//            return;
+//        }
+//
+//        if (mDragController.isDragging()) {
+//            mDragController.cancelDrag();
+//            return;
+//        }
+//
+//        if (isAppsViewVisible()) {
+//            showWorkspace(true);
+//        } else if (isWidgetsViewVisible())  {
+//            showOverviewMode(true);
+//        } else if (mWorkspace.isInOverviewMode()) {
+//            showWorkspace(true);
+//        } else if (mWorkspace.getOpenFolder() != null) {
+//            Folder openFolder = mWorkspace.getOpenFolder();
+//            if (openFolder.isEditingName()) {
+//                openFolder.dismissEditingName();
+//            } else {
+//                closeFolder();
+//            }
+//        } else {
+//            mWorkspace.exitWidgetResizeMode();
+//
+//            // Back button is a no-op here, but give at least some feedback for the button press
+//            mWorkspace.showOutlinesTemporarily();
+//        }
     }
 
     /**
@@ -4534,24 +4537,34 @@ public class Launcher extends Activity
         // The two first run cling paths are mutually exclusive, if the launcher is preinstalled
         // on the device, then we always show the first run cling experience (or if there is no
         // launcher2). Otherwise, we prompt the user upon started for migration
-//        LauncherClings launcherClings = new LauncherClings(this);
-//        if (launcherClings.shouldShowFirstRunOrMigrationClings()) {
-//            mClings = launcherClings;
-//            if (mModel.canMigrateFromOldLauncherDb(this)) {
+        LauncherClings launcherClings = new LauncherClings(this);
+        if (launcherClings.shouldShowFirstRunOrMigrationClings()) {
+            if (mModel.canMigrateFromOldLauncherDb(this)) {
 //                launcherClings.showMigrationCling();
-//            } else {
-//                launcherClings.showLongPressCling(true);
-//            }
-//        }
-        mModel.resetLoadedState(false, true);
-        mModel.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_CLEAR_WORKSPACE
-                        | LauncherModel.LOADER_FLAG_MIGRATE_SHORTCUTS);
-        // Set the flag to skip the folder cling
-        String spKey = LauncherAppState.getSharedPreferencesKey();
-        SharedPreferences sp = getSharedPreferences(spKey, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putBoolean(Launcher.USER_HAS_MIGRATED, true);
-        editor.apply();
+                LauncherModel model = getModel();
+                model.resetLoadedState(false, true);
+                model.startLoader(PagedView.INVALID_RESTORE_PAGE,
+                        LauncherModel.LOADER_FLAG_CLEAR_WORKSPACE
+                                | LauncherModel.LOADER_FLAG_MIGRATE_SHORTCUTS);
+                // Set the flag to skip the folder cling
+                String spKey = LauncherAppState.getSharedPreferencesKey();
+                SharedPreferences sp = this.getSharedPreferences(spKey, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putBoolean(Launcher.USER_HAS_MIGRATED, true);
+                editor.apply();
+            } else {
+                launcherClings.showLongPressCling(true);
+            }
+        }
+//        mModel.resetLoadedState(false, true);
+//        mModel.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_CLEAR_WORKSPACE
+//                        | LauncherModel.LOADER_FLAG_MIGRATE_SHORTCUTS);
+//        // Set the flag to skip the folder cling
+//        String spKey = LauncherAppState.getSharedPreferencesKey();
+//        SharedPreferences sp = getSharedPreferences(spKey, Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sp.edit();
+//        editor.putBoolean(Launcher.USER_HAS_MIGRATED, true);
+//        editor.apply();
     }
 
     void showWorkspaceSearchAndHotseat() {

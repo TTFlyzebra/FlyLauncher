@@ -10,12 +10,11 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="horizontal">
-        <ImageButton
+        <com.jancar.launcher.jancarview.SimpeCellView
             android:layout_marginLeft="10px"
             android:layout_marginRight="10px"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/item1"/>
+            android:layout_width="212px"
+            android:layout_height="317px"/>
         <ImageButton
             android:layout_marginLeft="10px"
             android:layout_marginRight="10px"
