@@ -1,4 +1,4 @@
-package com.jancar.launcher.jancarview;
+package com.jancar.launcher.launcherview.cellview;
 
 public interface CellType {
     /**

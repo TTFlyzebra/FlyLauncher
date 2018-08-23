@@ -1,7 +1,6 @@
-package com.jancar.launcher.jancarview;
+package com.jancar.launcher.launcherview;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +16,7 @@ import android.text.TextUtils;
 
 
 import com.jancar.launcher.utils.FlyLog;
+import com.jancar.launcher.utils.IntentParamParseHelper;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

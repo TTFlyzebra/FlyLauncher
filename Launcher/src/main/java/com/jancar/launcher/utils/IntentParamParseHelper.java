@@ -1,9 +1,7 @@
-package com.jancar.launcher.jancarview;
+package com.jancar.launcher.utils;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-
-import com.jancar.launcher.utils.FlyLog;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -5,33 +5,13 @@
     android:layout_height="match_parent"
     android:gravity="center"
     tools:context=".MainActivity">
-    <LinearLayout
+    <com.jancar.launcher.launcherview.LauncherView
+        android:id="@+id/ac_main_launcherview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="horizontal">
-        <com.jancar.launcher.jancarview.SimpeCellView
-            android:layout_marginLeft="10px"
-            android:layout_marginRight="10px"
-            android:layout_width="212px"
-            android:layout_height="317px"/>
-        <ImageButton
-            android:layout_marginLeft="10px"
-            android:layout_marginRight="10px"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/item2"/>
-        <ImageButton
-            android:layout_marginLeft="10px"
-            android:layout_marginRight="10px"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/item3"/>
-        <ImageButton
-            android:layout_marginLeft="10px"
-            android:layout_marginRight="10px"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/item4"/>
-    </LinearLayout>
+        android:layout_height="match_parent"/>
+    <com.jancar.launcher.launcherview.NavForViewPager
+        android:id="@+id/ac_main_navforviewpager"
+        android:layout_width="match_parent"
+        android:layout_height="100px"
+        android:layout_alignParentBottom="true"/>
 </RelativeLayout>
