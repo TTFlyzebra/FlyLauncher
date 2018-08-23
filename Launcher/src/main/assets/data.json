@@ -8,8 +8,8 @@
   "y":-69,
   "cells": [
     {
-      "packName": "com.android.launcher3",
-      "className": "com.android.launcher3.Launcher",
+      "packName": "com.autonavi.amapauto",
+      "className": "com.autonavi.amapauto.MainMapActivity",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page01_default_2.png",
       "focusImageUrl": "file:///android_asset/image/page01_focus_2.png",
@@ -26,8 +26,8 @@
       "height":317
     },
     {
-      "packName": "com.android.launcher3",
-      "className": "com.android.launcher3.Launcher",
+      "packName": "",
+      "className": "",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page01_default_1.png",
       "focusImageUrl": "file:///android_asset/image/page01_focus_1.png",
@@ -44,8 +44,8 @@
       "height":317
     },
     {
-      "packName": "com.android.launcher3",
-      "className": "com.android.launcher3.Launcher",
+      "packName": "",
+      "className": "",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page01_default_3.png",
       "focusImageUrl": "file:///android_asset/image/page01_focus_3.png",
@@ -62,8 +62,8 @@
       "height":317
     },
     {
-      "packName": "com.android.launcher3",
-      "className": "com.android.launcher3.Launcher",
+      "packName": "",
+      "className": "",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page01_default_4.png",
       "focusImageUrl": "file:///android_asset/image/page01_focus_4.png",
@@ -80,8 +80,8 @@
       "height":317
     },
     {
-      "packName": "com.android.launcher3",
-      "className": "com.android.launcher3.Launcher",
+      "packName": "com.jancar.video",
+      "className": "com.jancar.video.VideoListActivity",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page02_default_1.png",
       "focusImageUrl": "file:///android_asset/image/page02_focus_1.png",
@@ -98,8 +98,8 @@
       "height":317
     },
     {
-      "packName": "com.android.launcher3",
-      "className": "com.android.launcher3.Launcher",
+      "packName": "",
+      "className": "",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page02_default_2.png",
       "focusImageUrl": "file:///android_asset/image/page02_focus_2.png",
@@ -116,8 +116,8 @@
       "height":317
     },
     {
-      "packName": "com.android.launcher3",
-      "className": "com.android.launcher3.Launcher",
+      "packName": "com.jancar.music",
+      "className": "com.jancar.music.MusicListActivity",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page02_default_3.png",
       "focusImageUrl": "file:///android_asset/image/page02_focus_3.png",
@@ -134,8 +134,8 @@
       "height":317
     },
     {
-      "packName": "com.android.launcher3",
-      "className": "com.android.launcher3.Launcher",
+      "packName": "com.jancar.imagebrowser",
+      "className": "com.jancar.imagebrowser.ImageBrowserActivity",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page02_default_4.png",
       "focusImageUrl": "file:///android_asset/image/page02_focus_4.png",
@@ -152,8 +152,8 @@
       "height":317
     },
     {
-      "packName": "com.android.launcher3",
-      "className": "com.android.launcher3.Launcher",
+      "packName": "com.android.settings",
+      "className": "com.ATCSetting.mainui.MainActivity",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page03_default_1.png",
       "focusImageUrl": "file:///android_asset/image/page03_focus_1.png",
@@ -170,8 +170,8 @@
       "height":317
     },
     {
-      "packName": "com.android.launcher3",
-      "className": "com.android.launcher3.Launcher",
+      "packName": "",
+      "className": "",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page03_default_2.png",
       "focusImageUrl": "file:///android_asset/image/page03_focus_2.png",

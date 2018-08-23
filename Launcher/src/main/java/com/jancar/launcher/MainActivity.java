@@ -6,8 +6,8 @@ import android.content.res.AssetManager;
 import android.os.Bundle;
 
 import com.jancar.launcher.bean.PageBean;
-import com.jancar.launcher.launcherview.LauncherView;
-import com.jancar.launcher.launcherview.NavForViewPager;
+import com.jancar.launcher.launcherview.viewpager.LauncherView;
+import com.jancar.launcher.launcherview.viewpager.NavForViewPager;
 import com.jancar.launcher.utils.GsonUtils;
 
 import java.io.BufferedReader;

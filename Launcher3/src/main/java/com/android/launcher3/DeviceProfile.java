@@ -414,7 +414,8 @@ public class DeviceProfile {
         lp.gravity = Gravity.CENTER;
         Rect padding = getWorkspacePadding(isLayoutRtl);
         workspace.setLayoutParams(lp);
-        workspace.setPadding(padding.left, padding.top, padding.right, padding.bottom);
+        //@FlyZebra
+        workspace.setPadding(30, padding.top, 30, padding.bottom);
         workspace.setPageSpacing(getWorkspacePageSpacing(isLayoutRtl));
 
         // Layout the hotseat

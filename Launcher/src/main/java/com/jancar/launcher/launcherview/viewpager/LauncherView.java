@@ -1,4 +1,4 @@
-package com.jancar.launcher.launcherview;
+package com.jancar.launcher.launcherview.viewpager;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;

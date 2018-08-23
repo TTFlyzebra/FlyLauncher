@@ -115,18 +115,6 @@ public class InvariantDeviceProfile {
         numHotseatIcons = hs;
         hotseatIconSize = his;
         defaultLayoutId = dlId;
-        FlyLog.d("flyzebra","name="+name+
-                ",minWidthDps="+minWidthDps+
-                ",minHeightDps="+minHeightDps+
-                ",numRows="+numRows+
-                ",numColumns="+numColumns+
-                ",numFolderRows="+numFolderRows+
-                ",numFolderColumns="+numFolderColumns+
-                ",minAllAppsPredictionColumns="+minAllAppsPredictionColumns+
-                ",iconSize="+iconSize+
-                ",numHotseatIcons="+numHotseatIcons+
-                ",hotseatIconSize="+hotseatIconSize+
-                ",defaultLayoutId="+defaultLayoutId);
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -205,7 +193,7 @@ public class InvariantDeviceProfile {
 
         //ADD Jancar
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("JarCar",
-                400, 682,     5, 6, 4, 4, 4, 72, 14.4f,  1, 72, R.xml.default_workspace_5x6));
+                400, 682,     3, 5, 4, 4, 4, 80, 14.4f,  1, 80, R.xml.default_workspace_5x6));
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("Large Phone",
                 406, 694,     5, 5, 4, 4, 4, 64, 14.4f,  5, 56, R.xml.default_workspace_5x5));
         // The tablet profile is odd in that the landscape orientation

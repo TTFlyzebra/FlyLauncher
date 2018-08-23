@@ -1,4 +1,4 @@
-package com.jancar.launcher.launcherview;
+package com.jancar.launcher.utils;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
@@ -26,9 +26,9 @@ import java.util.Map;
 
 /**
  *
- * Created by lenovo on 2016/6/22.
+ * Created by FlyZebra on 2016/6/22.
  */
-public class CommondTool {
+public class CommondUtils {
 
     /**
      * 执行shell指令
@@ -114,14 +114,12 @@ public class CommondTool {
      *
      * @param context
      * @param action
-     * @param data    格式遵循count=(int)1#name=xiaohei,详情参照IntentParamParseHelper类
-     * @param url     URL Scheme
      */
-    public static boolean execStartActivity(Context context, String action, String data, String url, boolean isNeedAuth) {
-        return execStartActivity(context, action, data, url, isNeedAuth, Intent.FLAG_ACTIVITY_NEW_TASK);
+    public static boolean execStartActivity(Context context, String action) {
+        return execStartActivity(context, action, Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
-    public static boolean execStartActivity(Context context, String action, String data, String url, boolean isNeedAuth, int flag) {
+    public static boolean execStartActivity(Context context, String action,int flag) {
         try {
 
 
@@ -138,15 +136,7 @@ public class CommondTool {
             String activityName = resolveInfo.get(0).activityInfo.name;
             String packName = resolveInfo.get(0).activityInfo.packageName;
 
-            FlyLog.d("action :" + action + " data:" + data + " isNeedAuth:" + isNeedAuth + " url:" + url);
             Intent it = new Intent();
-            if (!TextUtils.isEmpty(data)) {
-                Bundle bundle = IntentParamParseHelper.parseBundle(data);
-                it.putExtras(bundle);
-            }
-            if (!TextUtils.isEmpty(url)) {
-                it.setData(Uri.parse(url));
-            }
             it.addFlags(flag);
             if (!TextUtils.isEmpty(activityName) && !TextUtils.isEmpty(packName)) {
                 FlyLog.d("action :" + action + " change to package " + packName + "and activity " + activityName);
@@ -163,22 +153,6 @@ public class CommondTool {
             e.printStackTrace();
         }
         return false;
-    }
-
-
-    /**
-     * 执行命令,启动activity
-     *
-     * @param context
-     * @param action
-     * @param data    格式遵循count=(int)1#name=xiaohei,详情参照IntentParamParseHelper类
-     */
-    public static boolean execStartActivity(Context context, String action, String data, boolean isNeedAuth) {
-        return execStartActivity(context, action, data, null, isNeedAuth, Intent.FLAG_ACTIVITY_NEW_TASK);
-    }
-
-    public static boolean execStartActivity(Context context, String action, String data, boolean isNeedAuth, int flag) {
-        return execStartActivity(context, action, data, null, isNeedAuth, flag);
     }
 
     /**
@@ -210,22 +184,6 @@ public class CommondTool {
         return false;
     }
 
-
-    /**
-     * 执行命令,启动activity,启动失败时给出相应提示
-     *
-     * @param context
-     * @param action
-     * @param cmd     格式遵循count=(int)1#name=xiaohei,详情参照IntentParamParseHelper类
-     * @param info    启动失败时的提示信息
-     */
-    public static boolean execStartActivityAndShowTip(Context context, String action, String cmd, String info, boolean isNeedAuth) {
-        if (!execStartActivity(context, action, cmd, isNeedAuth)) {
-//            DialogUtil.showDialog(context, info);
-            return false;
-        }
-        return true;
-    }
 
     /**
      * 执行命令,根据包名启动应用
@@ -341,39 +299,6 @@ public class CommondTool {
             FlyLog.d(packagename + "app  installed....");
             return true;
         }
-    }
-
-    /**
-     * @param context
-     * @param resId   资源String
-     *                以|线进行分割，第一个参数为action的话以action启动，为activity的话以activity启动，为package的话以package启动
-     *                如果不以|进行分割的话，默认以action方式启动
-     */
-    public static void execStartActivity(Context context, @StringRes int resId) {
-        try {
-            String cmd = context.getString(resId);
-            String[] cmds = cmd.split("\\|");
-            if (cmds.length > 1) {
-                if (Type.ACTION.equals(cmds[0])) {
-                    execStartActivity(context, cmds[1], null, false);
-                } else if (Type.ACTIVITY.equals(cmds[0]) && cmds.length == 3) {
-                    execStartPackage(context, cmds[1], cmds[2]);
-                } else {
-                    execStartPackage(context, cmds[1]);
-                }
-            } else {
-                execStartActivity(context, cmd, null, false);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            FlyLog.e(e.toString());
-        }
-    }
-
-    public interface Type {
-        String ACTIVITY = "activity";
-        String ACTION = "action";
-        String PACKAGE = "package";
     }
 
 }

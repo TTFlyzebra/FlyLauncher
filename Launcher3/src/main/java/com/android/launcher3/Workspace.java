@@ -998,6 +998,7 @@ public class Workspace extends PagedView
             if (child instanceof FolderIcon) {
                 ((FolderIcon) child).setTextVisible(true);
             }
+            //@FlyZebra run to this
             layout = getScreenWithId(screenId);
             child.setOnKeyListener(new IconKeyEventListener());
         }
@@ -1023,6 +1024,8 @@ public class Workspace extends PagedView
         int childId = mLauncher.getViewIdForItem(info);
 
         boolean markCellsAsOccupied = !(child instanceof Folder);
+
+        //@FlyZebra
         if (!layout.addViewToCellLayout(child, insert ? 0 : -1, childId, lp, markCellsAsOccupied)) {
             // TODO: This branch occurs when the workspace is adding views
             // outside of the defined grid

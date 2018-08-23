@@ -1,4 +1,4 @@
-package com.jancar.launcher.launcherview;
+package com.jancar.launcher.launcherview.viewpager;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -18,8 +18,7 @@ import com.jancar.launcher.R;
  */
 public class NavForViewPager extends View {
     //    private final String TAG = "com.flyzebra";
-    private Paint select_paint;
-    private Paint un_select_paint;
+    private Paint paint;
     private int width;
     private int height;
     //总页数
@@ -27,9 +26,9 @@ public class NavForViewPager extends View {
     //当前页
     private int currentItem = 5;
 
-    private int circleWidth = 36;
-    private int circleColor1 = 0x70000000;
-    private int circleColor2 = 0xDFFF1100;
+    private int circleWidth = 16;
+    private Bitmap nav_on;
+    private Bitmap nav_off;
 
     public NavForViewPager(Context context) {
         this(context, null);
@@ -41,6 +40,9 @@ public class NavForViewPager extends View {
 
     public NavForViewPager(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initPaint();
+        nav_off= BitmapFactory.decodeResource(getResources(), R.drawable.nav_off);
+        nav_on= BitmapFactory.decodeResource(getResources(), R.drawable.nav_on);
     }
 
     public void setViewPager(final ViewPager viewPager){
@@ -92,18 +94,19 @@ public class NavForViewPager extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        initPaint();
         if (sumItem > 0) {
             float x = width / 2 - (sumItem * circleWidth * 2 - circleWidth) / 2 + circleWidth / 2;
             for (int i = 0; i < sumItem; i++) {
                 if (i == currentItem) {
-//                    canvas.drawCircle(x + i * circleWidth * 2, circleWidth, circleWidth / 2, select_paint);
-                    Bitmap bitmap= BitmapFactory.decodeResource(getResources(), R.drawable.nav_on);
-                    canvas.drawBitmap(bitmap,x + i * circleWidth * 2, circleWidth,select_paint);
+                    if(nav_on==null){
+                        nav_on= BitmapFactory.decodeResource(getResources(), R.drawable.nav_on);
+                    }
+                    canvas.drawBitmap(nav_on,x + i * circleWidth * 2, circleWidth,paint);
                 } else {
-//                    canvas.drawCircle(x + i * circleWidth * 2, circleWidth, circleWidth / 2, un_select_paint);
-                    Bitmap bitmap= BitmapFactory.decodeResource(getResources(), R.drawable.nav_off);
-                    canvas.drawBitmap(bitmap,x + i * circleWidth * 2, circleWidth,un_select_paint);
+                    if(nav_off==null){
+                        nav_off= BitmapFactory.decodeResource(getResources(), R.drawable.nav_off);
+                    }
+                    canvas.drawBitmap(nav_off,x + i * circleWidth * 2, circleWidth,paint);
                 }
             }
         }
@@ -111,17 +114,11 @@ public class NavForViewPager extends View {
     }
 
     private void initPaint() {
-        if (un_select_paint == null) {
-            un_select_paint = new Paint();// 实例化Paint
-            un_select_paint.setAntiAlias(true);
-            un_select_paint.setColor(circleColor1);// 设置颜色
-            un_select_paint.setStyle(Paint.Style.FILL);// 设置样式
-        }
-        if (select_paint == null) {
-            select_paint = new Paint();
-            select_paint.setAntiAlias(true);
-            select_paint.setColor(circleColor2);
-            select_paint.setStyle(Paint.Style.FILL);
+        if (paint == null) {
+            paint = new Paint();
+            paint.setAntiAlias(true);
+            paint.setColor(0xFFFFFFFF);
+            paint.setStyle(Paint.Style.FILL);
         }
     }
 }

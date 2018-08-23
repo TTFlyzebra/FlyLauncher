@@ -106,6 +106,7 @@ import com.android.launcher3.compat.UserHandleCompat;
 import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.model.WidgetsModel;
 import com.android.launcher3.util.ComponentKey;
+import com.android.launcher3.util.FlyLog;
 import com.android.launcher3.util.LongArrayMap;
 import com.android.launcher3.util.Thunk;
 import com.android.launcher3.widget.PendingAddWidgetInfo;
@@ -3808,6 +3809,7 @@ public class Launcher extends Activity
                 case LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:
                 case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
                     ShortcutInfo info = (ShortcutInfo) item;
+                    //FlyZebra
                     view = createShortcut(info);
 
                     /*
@@ -3836,6 +3838,9 @@ public class Launcher extends Activity
                 default:
                     throw new RuntimeException("Invalid Item Type");
             }
+
+            FlyLog.d("add view=%s,container=%d,screenId=%d,cellX=%d,cellY=%d",view.toString(),item.container,item.screenId,item.cellX
+            ,item.cellY);
 
             workspace.addInScreenFromBind(view, item.container, item.screenId, item.cellX,
                     item.cellY, 1, 1);

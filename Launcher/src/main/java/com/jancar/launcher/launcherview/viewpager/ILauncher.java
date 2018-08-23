@@ -1,4 +1,4 @@
-package com.jancar.launcher.launcherview;
+package com.jancar.launcher.launcherview.viewpager;
 
 import com.jancar.launcher.bean.PageBean;
 
