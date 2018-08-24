@@ -59,6 +59,7 @@ import com.android.launcher3.model.MigrateFromRestoreTask;
 import com.android.launcher3.model.WidgetsModel;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.CursorIconInfo;
+import com.android.launcher3.util.FlyLog;
 import com.android.launcher3.util.LongArrayMap;
 import com.android.launcher3.util.ManagedProfileHeuristic;
 import com.android.launcher3.util.Thunk;
@@ -1080,7 +1081,7 @@ public class LauncherModel extends BroadcastReceiver
     /**
      * Removes the specified items from the database
      * @param context
-     * @param item
+     * @param items
      */
     static void deleteItemsFromDatabase(Context context, final ArrayList<? extends ItemInfo> items) {
         final ContentResolver cr = context.getContentResolver();
@@ -2034,6 +2035,8 @@ public class LauncherModel extends BroadcastReceiver
                                     info.rank = c.getInt(rankIndex);
                                     info.spanX = 1;
                                     info.spanY = 1;
+                                    FlyLog.d("screenIndex=%d,cellXIndex=%d,cellYIndex=%d",screenIndex,cellXIndex,cellYIndex);
+                                    FlyLog.d("screenId=%d,cellX=%d,cellY=%d",info.screenId,info.cellX,info.cellY);
                                     info.intent.putExtra(ItemInfo.EXTRA_PROFILE, serialNumber);
                                     if (info.promisedIntent != null) {
                                         info.promisedIntent.putExtra(ItemInfo.EXTRA_PROFILE, serialNumber);
@@ -2064,6 +2067,7 @@ public class LauncherModel extends BroadcastReceiver
                                     switch (container) {
                                     case LauncherSettings.Favorites.CONTAINER_DESKTOP:
                                     case LauncherSettings.Favorites.CONTAINER_HOTSEAT:
+                                        //@FlyZebra
                                         sBgWorkspaceItems.add(info);
                                         break;
                                     default:

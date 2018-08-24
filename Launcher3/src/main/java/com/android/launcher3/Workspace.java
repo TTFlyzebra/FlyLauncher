@@ -3162,11 +3162,11 @@ public class Workspace extends PagedView
         final View child = (mDragInfo == null) ? null : mDragInfo.cell;
         // Identify whether we have dragged over a side page
         if (workspaceInModalState()) {
-            if (mLauncher.getHotseat() != null && !isExternalDragWidget(d)) {
-                if (isPointInSelfOverHotseat(d.x, d.y, r)) {
-                    layout = mLauncher.getHotseat().getLayout();
-                }
-            }
+//            if (mLauncher.getHotseat() != null && !isExternalDragWidget(d)) {
+//                if (isPointInSelfOverHotseat(d.x, d.y, r)) {
+//                    layout = mLauncher.getHotseat().getLayout();
+//                }
+//            }
             if (layout == null) {
                 layout = findMatchingPageForDragOver(d.dragView, d.x, d.y, false);
             }
@@ -3185,11 +3185,11 @@ public class Workspace extends PagedView
             }
         } else {
             // Test to see if we are over the hotseat otherwise just use the current page
-            if (mLauncher.getHotseat() != null && !isDragWidget(d)) {
-                if (isPointInSelfOverHotseat(d.x, d.y, r)) {
-                    layout = mLauncher.getHotseat().getLayout();
-                }
-            }
+//            if (mLauncher.getHotseat() != null && !isDragWidget(d)) {
+//                if (isPointInSelfOverHotseat(d.x, d.y, r)) {
+//                    layout = mLauncher.getHotseat().getLayout();
+//                }
+//            }
             if (layout == null) {
                 layout = getCurrentDropLayout();
             }

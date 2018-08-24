@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 
+import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.bean.PageBean;
 import com.jancar.launcher.launcherview.viewpager.LauncherView;
 import com.jancar.launcher.launcherview.viewpager.NavForViewPager;
@@ -13,6 +14,8 @@ import com.jancar.launcher.utils.GsonUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class MainActivity extends Activity {
     private LauncherView launcherView;
@@ -26,8 +29,18 @@ public class MainActivity extends Activity {
         naviForViewPager = (NavForViewPager) findViewById(R.id.ac_main_navforviewpager);
         String jsonStr = getAssetFileText("data.json",this);
         PageBean pageBean = GsonUtils.json2Object(jsonStr,PageBean.class);
-        launcherView.setData(pageBean);
-        naviForViewPager.setViewPager(launcherView);
+
+        if(pageBean!=null&&pageBean.cells!=null) {
+            //排序
+            Collections.sort(pageBean.cells, new Comparator<CellBean>() {
+                @Override
+                public int compare(CellBean lhs, CellBean rhs) {
+                    return lhs.sort - rhs.sort;
+                }
+            });
+            launcherView.setData(pageBean);
+            naviForViewPager.setViewPager(launcherView);
+        }
     }
 
     @Override

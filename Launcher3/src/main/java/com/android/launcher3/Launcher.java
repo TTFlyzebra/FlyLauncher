@@ -1387,7 +1387,7 @@ public class Launcher extends Activity
         // Setup the hotseat
         mHotseat = (Hotseat) findViewById(R.id.hotseat);
         if (mHotseat != null) {
-            mHotseat.setOnLongClickListener(this);
+//            mHotseat.setOnLongClickListener(this);
         }
 
         mOverviewPanel = (ViewGroup) findViewById(R.id.overview_panel);
@@ -3339,14 +3339,14 @@ public class Launcher extends Activity
                     .sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
         }
     }
-
+//@FlyZebra no small show wiget
     void showOverviewMode(boolean animated) {
-        mWorkspace.setVisibility(View.VISIBLE);
-        mStateTransitionAnimation.startAnimationToWorkspace(mState, mWorkspace.getState(),
-                Workspace.State.OVERVIEW,
-                WorkspaceStateTransitionAnimation.SCROLL_TO_CURRENT_PAGE, animated,
-                null /* onCompleteRunnable */);
-        mState = State.WORKSPACE;
+//        mWorkspace.setVisibility(View.VISIBLE);
+//        mStateTransitionAnimation.startAnimationToWorkspace(mState, mWorkspace.getState(),
+//                Workspace.State.OVERVIEW,
+//                WorkspaceStateTransitionAnimation.SCROLL_TO_CURRENT_PAGE, animated,
+//                null /* onCompleteRunnable */);
+//        mState = State.WORKSPACE;
     }
 
     /**
@@ -3839,8 +3839,8 @@ public class Launcher extends Activity
                     throw new RuntimeException("Invalid Item Type");
             }
 
-            FlyLog.d("add view=%s,container=%d,screenId=%d,cellX=%d,cellY=%d",view.toString(),item.container,item.screenId,item.cellX
-            ,item.cellY);
+            FlyLog.d("add view,container=%d,screenId=%d,cellX=%d,cellY=%d",
+                    item.container,item.screenId,item.cellX,item.cellY);
 
             workspace.addInScreenFromBind(view, item.container, item.screenId, item.cellX,
                     item.cellY, 1, 1);
@@ -4539,28 +4539,39 @@ public class Launcher extends Activity
 
     @Thunk
     void showFirstRunClings() {
+        LauncherModel model = getModel();
+        model.resetLoadedState(false, true);
+        model.startLoader(PagedView.INVALID_RESTORE_PAGE,
+                LauncherModel.LOADER_FLAG_CLEAR_WORKSPACE
+                        | LauncherModel.LOADER_FLAG_MIGRATE_SHORTCUTS);
+        // Set the flag to skip the folder cling
+        String spKey = LauncherAppState.getSharedPreferencesKey();
+        SharedPreferences sp = this.getSharedPreferences(spKey, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(Launcher.USER_HAS_MIGRATED, true);
+        editor.apply();
         // The two first run cling paths are mutually exclusive, if the launcher is preinstalled
         // on the device, then we always show the first run cling experience (or if there is no
         // launcher2). Otherwise, we prompt the user upon started for migration
-        LauncherClings launcherClings = new LauncherClings(this);
-        if (launcherClings.shouldShowFirstRunOrMigrationClings()) {
-            if (mModel.canMigrateFromOldLauncherDb(this)) {
-//                launcherClings.showMigrationCling();
-                LauncherModel model = getModel();
-                model.resetLoadedState(false, true);
-                model.startLoader(PagedView.INVALID_RESTORE_PAGE,
-                        LauncherModel.LOADER_FLAG_CLEAR_WORKSPACE
-                                | LauncherModel.LOADER_FLAG_MIGRATE_SHORTCUTS);
-                // Set the flag to skip the folder cling
-                String spKey = LauncherAppState.getSharedPreferencesKey();
-                SharedPreferences sp = this.getSharedPreferences(spKey, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putBoolean(Launcher.USER_HAS_MIGRATED, true);
-                editor.apply();
-            } else {
-                launcherClings.showLongPressCling(true);
-            }
-        }
+//        LauncherClings launcherClings = new LauncherClings(this);
+//        if (launcherClings.shouldShowFirstRunOrMigrationClings()) {
+//            if (mModel.canMigrateFromOldLauncherDb(this)) {
+////                launcherClings.showMigrationCling();
+//                LauncherModel model = getModel();
+//                model.resetLoadedState(false, true);
+//                model.startLoader(PagedView.INVALID_RESTORE_PAGE,
+//                        LauncherModel.LOADER_FLAG_CLEAR_WORKSPACE
+//                                | LauncherModel.LOADER_FLAG_MIGRATE_SHORTCUTS);
+//                // Set the flag to skip the folder cling
+//                String spKey = LauncherAppState.getSharedPreferencesKey();
+//                SharedPreferences sp = this.getSharedPreferences(spKey, Context.MODE_PRIVATE);
+//                SharedPreferences.Editor editor = sp.edit();
+//                editor.putBoolean(Launcher.USER_HAS_MIGRATED, true);
+//                editor.apply();
+//            } else {
+//                launcherClings.showLongPressCling(true);
+//            }
+//        }
 //        mModel.resetLoadedState(false, true);
 //        mModel.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_CLEAR_WORKSPACE
 //                        | LauncherModel.LOADER_FLAG_MIGRATE_SHORTCUTS);

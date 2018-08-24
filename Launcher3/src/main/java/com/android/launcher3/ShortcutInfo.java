@@ -36,6 +36,7 @@ import java.util.Arrays;
  */
 public class ShortcutInfo extends ItemInfo {
 
+
     public static final int DEFAULT = 0;
 
     /**

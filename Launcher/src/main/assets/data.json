@@ -21,7 +21,7 @@
       "textRight": 0,
       "textTop": 0,
       "textBottom": 28,
-      "sort": 2,
+      "sort": 1,
       "width":212,
       "height":317
     },
@@ -39,7 +39,7 @@
       "textRight": 0,
       "textTop": 0,
       "textBottom": 28,
-      "sort": 1,
+      "sort": 4,
       "width":212,
       "height":317
     },
@@ -49,7 +49,7 @@
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page01_default_3.png",
       "focusImageUrl": "file:///android_asset/image/page01_focus_3.png",
-      "type": 1,
+      "type": 2,
       "textTitle": "收音机",
       "textSize": 26,
       "textColor": "#FFFFFF",
@@ -57,7 +57,7 @@
       "textRight": 0,
       "textTop": 0,
       "textBottom": 28,
-      "sort": 3,
+      "sort": 2,
       "width":212,
       "height":317
     },
@@ -75,7 +75,7 @@
       "textRight": 0,
       "textTop": 0,
       "textBottom": 28,
-      "sort": 4,
+      "sort": 3,
       "width":212,
       "height":317
     },
@@ -201,7 +201,7 @@
       "textRight": 0,
       "textTop": 0,
       "textBottom": 28,
-      "sort": 11,
+      "sort": 0,
       "width":212,
       "height":317
     }

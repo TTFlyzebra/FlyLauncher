@@ -95,9 +95,9 @@ public class WallpaperCropActivity extends BaseActivity implements Handler.Callb
         mLoaderHandler = new Handler(mLoaderThread.getLooper(), this);
 
         init();
-        if (!enableRotation()) {
-            setRequestedOrientation(Configuration.ORIENTATION_PORTRAIT);
-        }
+//        if (!enableRotation()) {
+//            setRequestedOrientation(Configuration.ORIENTATION_PORTRAIT);
+//        }
     }
 
     protected void init() {

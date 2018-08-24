@@ -168,8 +168,7 @@ public class MigrateFromRestoreTask {
         }
 
         // Make sure we haven't removed everything.
-        final Cursor c = mContext.getContentResolver().query(
-                LauncherSettings.Favorites.CONTENT_URI, null, null, null, null);
+        final Cursor c = mContext.getContentResolver().query(LauncherSettings.Favorites.CONTENT_URI, null, null, null, null);
         boolean hasData = c.moveToNext();
         c.close();
         if (!hasData) {

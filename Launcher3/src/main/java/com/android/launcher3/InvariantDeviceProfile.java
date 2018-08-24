@@ -148,7 +148,6 @@ public class InvariantDeviceProfile {
         minAllAppsPredictionColumns = closestProfile.minAllAppsPredictionColumns;
 
         iconSize = interpolatedDeviceProfileOut.iconSize;
-        FlyLog.d("iconSize=%f",iconSize);
 
         iconBitmapSize = Utilities.pxFromDp(iconSize, dm);
         iconTextSize = interpolatedDeviceProfileOut.iconTextSize;
@@ -191,9 +190,9 @@ public class InvariantDeviceProfile {
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("Nexus 5",
                 359, 567,     4, 4, 4, 4, 4, DEFAULT_ICON_SIZE_DP, 13, 5, 56, R.xml.default_workspace_4x4));
 
-        //ADD Jancar
+        //@FlyZebra set column rows. ADD Jancar
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("JarCar",
-                400, 682,     3, 5, 4, 4, 4, 80, 14.4f,  1, 80, R.xml.default_workspace_5x6));
+                400, 682,     3, 6, 0, 0, 4, 80, 14.4f,  1, 80, R.xml.jarcar_default_workspace));
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("Large Phone",
                 406, 694,     5, 5, 4, 4, 4, 64, 14.4f,  5, 56, R.xml.default_workspace_5x5));
         // The tablet profile is odd in that the landscape orientation

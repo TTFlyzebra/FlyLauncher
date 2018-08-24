@@ -37,11 +37,12 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
 
     public SimpeCellView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+        initView(context);
 
     }
 
-    private void init(Context context) {
+    @Override
+    public void initView(Context context) {
         FlyLog.d();
         imageView = new FlyImageView(context);
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
