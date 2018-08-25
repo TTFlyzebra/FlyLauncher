@@ -193,7 +193,7 @@ public class CellLayout extends ViewGroup implements BubbleTextShadowHandler {
         mFixedCellWidth = mFixedCellHeight = -1;
         mWidthGap = mOriginalWidthGap = 0;
         //@FlyZebar set Top
-        mHeightGap = mOriginalHeightGap = 40;
+        mHeightGap = mOriginalHeightGap = 0;
         mMaxGap = Integer.MAX_VALUE;
         mCountX = (int) grid.inv.numColumns;
         mCountY = (int) grid.inv.numRows;

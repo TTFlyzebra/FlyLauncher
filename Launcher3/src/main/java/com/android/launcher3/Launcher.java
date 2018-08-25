@@ -2433,7 +2433,11 @@ public class Launcher extends Activity
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (isAppsViewVisible()) {
+            showWorkspace(true);
+        } else{
+            super.onBackPressed();
+        }
 //        if (mLauncherCallbacks != null && mLauncherCallbacks.handleBackPressed()) {
 //            return;
 //        }
@@ -2573,8 +2577,10 @@ public class Launcher extends Activity
     protected void onClickAllAppsButton(View v) {
         if (LOGD) Log.d(TAG, "onClickAllAppsButton");
         if (!isAppsViewVisible()) {
-            showAppsView(true /* animated */, false /* resetListToTop */,
-                    true /* updatePredictedApps */, false /* focusSearchBar */);
+            showAppsView(true ,
+                    false ,
+                    true ,
+                    false);
 
             if (mLauncherCallbacks != null) {
                 mLauncherCallbacks.onClickAllAppsButton(v);
@@ -2585,8 +2591,8 @@ public class Launcher extends Activity
     protected void onLongClickAllAppsButton(View v) {
         if (LOGD) Log.d(TAG, "onLongClickAllAppsButton");
         if (!isAppsViewVisible()) {
-            showAppsView(true /* animated */, false /* resetListToTop */,
-                    true /* updatePredictedApps */, true /* focusSearchBar */);
+            showAppsView(false /* animated */, false /* resetListToTop */,
+                    true /* updatePredictedApps */, false /* focusSearchBar */);
         }
     }
 
@@ -3339,8 +3345,9 @@ public class Launcher extends Activity
                     .sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
         }
     }
-//@FlyZebra no small show wiget
+//@FlyZebra no small show wiget show all apps
     void showOverviewMode(boolean animated) {
+        onLongClickAllAppsButton(null);
 //        mWorkspace.setVisibility(View.VISIBLE);
 //        mStateTransitionAnimation.startAnimationToWorkspace(mState, mWorkspace.getState(),
 //                Workspace.State.OVERVIEW,
@@ -4539,48 +4546,27 @@ public class Launcher extends Activity
 
     @Thunk
     void showFirstRunClings() {
-        LauncherModel model = getModel();
-        model.resetLoadedState(false, true);
-        model.startLoader(PagedView.INVALID_RESTORE_PAGE,
-                LauncherModel.LOADER_FLAG_CLEAR_WORKSPACE
-                        | LauncherModel.LOADER_FLAG_MIGRATE_SHORTCUTS);
-        // Set the flag to skip the folder cling
-        String spKey = LauncherAppState.getSharedPreferencesKey();
-        SharedPreferences sp = this.getSharedPreferences(spKey, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putBoolean(Launcher.USER_HAS_MIGRATED, true);
-        editor.apply();
         // The two first run cling paths are mutually exclusive, if the launcher is preinstalled
         // on the device, then we always show the first run cling experience (or if there is no
         // launcher2). Otherwise, we prompt the user upon started for migration
-//        LauncherClings launcherClings = new LauncherClings(this);
-//        if (launcherClings.shouldShowFirstRunOrMigrationClings()) {
-//            if (mModel.canMigrateFromOldLauncherDb(this)) {
-////                launcherClings.showMigrationCling();
-//                LauncherModel model = getModel();
-//                model.resetLoadedState(false, true);
-//                model.startLoader(PagedView.INVALID_RESTORE_PAGE,
-//                        LauncherModel.LOADER_FLAG_CLEAR_WORKSPACE
-//                                | LauncherModel.LOADER_FLAG_MIGRATE_SHORTCUTS);
-//                // Set the flag to skip the folder cling
-//                String spKey = LauncherAppState.getSharedPreferencesKey();
-//                SharedPreferences sp = this.getSharedPreferences(spKey, Context.MODE_PRIVATE);
-//                SharedPreferences.Editor editor = sp.edit();
-//                editor.putBoolean(Launcher.USER_HAS_MIGRATED, true);
-//                editor.apply();
-//            } else {
-//                launcherClings.showLongPressCling(true);
-//            }
-//        }
-//        mModel.resetLoadedState(false, true);
-//        mModel.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_CLEAR_WORKSPACE
-//                        | LauncherModel.LOADER_FLAG_MIGRATE_SHORTCUTS);
-//        // Set the flag to skip the folder cling
-//        String spKey = LauncherAppState.getSharedPreferencesKey();
-//        SharedPreferences sp = getSharedPreferences(spKey, Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sp.edit();
-//        editor.putBoolean(Launcher.USER_HAS_MIGRATED, true);
-//        editor.apply();
+        LauncherClings launcherClings = new LauncherClings(this);
+        if (launcherClings.shouldShowFirstRunOrMigrationClings()) {
+            if (mModel.canMigrateFromOldLauncherDb(this)) {
+//                launcherClings.showMigrationCling();
+                LauncherModel model = getModel();
+                model.resetLoadedState(false, true);
+                model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_CLEAR_WORKSPACE
+                                | LauncherModel.LOADER_FLAG_MIGRATE_SHORTCUTS);
+                // Set the flag to skip the folder cling
+                String spKey = LauncherAppState.getSharedPreferencesKey();
+                SharedPreferences sp = this.getSharedPreferences(spKey, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putBoolean(Launcher.USER_HAS_MIGRATED, true);
+                editor.apply();
+            } else {
+                launcherClings.showLongPressCling(true);
+            }
+        }
     }
 
     void showWorkspaceSearchAndHotseat() {
