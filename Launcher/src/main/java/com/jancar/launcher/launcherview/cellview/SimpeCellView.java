@@ -1,6 +1,7 @@
 package com.jancar.launcher.launcherview.cellview;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -14,18 +15,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.jancar.launcher.R;
 import com.jancar.launcher.bean.CellBean;
-import com.jancar.launcher.utils.CommondUtils;
 import com.jancar.launcher.launcherview.flyview.FlyImageView;
 import com.jancar.launcher.launcherview.flyview.FlyTextView;
+import com.jancar.launcher.launcherview.flyview.MirrorView;
+import com.jancar.launcher.utils.CommondUtils;
 import com.jancar.launcher.utils.FlyLog;
 
-public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouchListener,View.OnClickListener {
+public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouchListener, View.OnClickListener {
     private CellBean appInfo;
     private FlyImageView imageView;
+    private MirrorView mirrorView;
     private TextView textView;
     private Handler mHandler = new Handler();
+    private float clickAlpha = 0.75f;
+    private float normalAlphe = 1.0f;
 
     public SimpeCellView(Context context) {
         this(context, null);
@@ -38,7 +45,7 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
     public SimpeCellView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView(context);
-
+        focusChange(false);
     }
 
     @Override
@@ -55,7 +62,6 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
 
     @Override
     public void setData(CellBean appInfo) {
-        FlyLog.d();
         this.appInfo = appInfo;
         textView.setGravity(Gravity.CENTER);
         try {
@@ -76,9 +82,17 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
 
     @Override
     public void notifyView() {
-        FlyLog.d();
-        Glide.with(getContext()).load(appInfo.defaultImageUrl).into(imageView);
-        textView.setText(appInfo.textTitle);
+        if(textView!=null&&appInfo!=null&&appInfo.textTitle!=null){
+            textView.setText(appInfo.textTitle);
+        }
+        if(imageView==null) return;
+        Glide.with(getContext()).load(appInfo.defaultImageUrl).asBitmap().into(new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(final Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+                imageView.setImageBitmap(bitmap);
+                if(mirrorView!=null)  mirrorView.showImage(bitmap);
+            }
+        });
     }
 
     /**
@@ -86,42 +100,50 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
      */
     @Override
     public void runAction() {
-        if(CommondUtils.execStartPackage(getContext(),appInfo.packName,appInfo.className)) return;
-        if(CommondUtils.execStartActivity(getContext(),appInfo.action)) return;
-        if(!CommondUtils.execStartPackage(getContext(),appInfo.packName)){
-            Toast.makeText(getContext(),getContext().getResources().getString(R.string.startAppFailed),Toast.LENGTH_SHORT).show();
+        if (CommondUtils.execStartPackage(getContext(), appInfo.packName, appInfo.className))
+            return;
+        if (CommondUtils.execStartActivity(getContext(), appInfo.action)) return;
+        if (!CommondUtils.execStartPackage(getContext(), appInfo.packName)) {
+            Toast.makeText(getContext(), getContext().getResources().getString(R.string.startAppFailed), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void setMirrorView(MirrorView mirrorView) {
+        this.mirrorView = mirrorView;
     }
 
     private Runnable show = new Runnable() {
         @Override
         public void run() {
-            setAlpha(1.0f);
+            focusChange(false);
         }
     };
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            setAlpha(0.7f);
-//            mHandler.removeCallbacks(show);
-//            mHandler.postDelayed(show,500);
-        }
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-            setAlpha(1.0f);
-        }
-        if(event.getAction()==MotionEvent.ACTION_MOVE){
-            int x = (int) event.getRawX();
-            int y = (int) event.getRawY();
-            if (!isTouchPointInView(v, x, y)) {
-                setAlpha(1.0f);
-            }else{
-                mHandler.removeCallbacks(show);
-                mHandler.postDelayed(show,300);
-                setAlpha(0.7f);
-            }
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                focusChange(true);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                focusChange(isTouchPointInView(v, (int) event.getRawX(), (int) event.getRawY()));
+                break;
+            case MotionEvent.ACTION_UP:
+                focusChange(false);
+                break;
         }
         return false;
+    }
+
+    private void focusChange(boolean flag) {
+        if (flag) {
+            mHandler.removeCallbacks(show);
+            mHandler.postDelayed(show, 300);
+            imageView.setAlpha(clickAlpha);
+        } else {
+            imageView.setAlpha(normalAlphe);
+        }
     }
 
     @Override

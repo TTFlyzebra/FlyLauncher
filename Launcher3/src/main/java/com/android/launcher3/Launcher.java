@@ -3390,8 +3390,7 @@ public class Launcher extends Activity
     /**
      * Shows the apps view.
      */
-    void showAppsView(boolean animated, boolean resetListToTop, boolean updatePredictedApps,
-                      boolean focusSearchBar) {
+    void showAppsView(boolean animated, boolean resetListToTop, boolean updatePredictedApps, boolean focusSearchBar) {
         if (resetListToTop) {
             mAppsView.scrollToTop();
         }

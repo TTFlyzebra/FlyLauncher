@@ -75,6 +75,16 @@ public class SimplePageView extends FrameLayout implements IPage {
             lp.topMargin = sy + pageBean.y + (i / pageBean.columns) * (pageBean.itemHeight + pageBean.itemPadding*2)+pageBean.itemPadding;
             ICellView iCellView = CellViewFactory.createView(getContext(), appInfo);
             addView((View) iCellView, lp);
+
+            //添加镜像
+//            LayoutParams lpMirror = new LayoutParams(pageBean.itemWidth, pageBean.itemHeight);
+//            lpMirror.leftMargin = lp.leftMargin;
+//            lpMirror.topMargin = lp.topMargin+pageBean.itemHeight+12;
+//            MirrorView mirrorView = new MirrorView(getContext());
+//            mirrorView.setScaleType(ImageView.ScaleType.FIT_XY);
+//            iCellView.setMirrorView(mirrorView);
+//            addView(mirrorView,lpMirror);
+
             iCellView.notifyView();
         }
     }
