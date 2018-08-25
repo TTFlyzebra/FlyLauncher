@@ -28,16 +28,23 @@
         android:label="@string/app_name"
         android:supportsRtl="true">
         <activity android:name=".MainActivity"
+            android:clearTaskOnLaunch="true"
+            android:stateNotNeeded="true"
+            android:windowSoftInputMode="adjustPan"
+            android:resumeWhilePausing="true"
+            android:taskAffinity=""
+            android:enabled="true"
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme">
-            <intent-filter android:priority="0">
+            <intent-filter android:priority="999">
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.MONKEY"/>
             </intent-filter>
         </activity>
     </application>
