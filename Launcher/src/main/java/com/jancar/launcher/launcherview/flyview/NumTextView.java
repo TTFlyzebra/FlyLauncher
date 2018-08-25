@@ -13,8 +13,8 @@ import android.view.View;
 
 import com.jancar.launcher.R;
 
-public class ImageTextView extends View {
-    private Bitmap mBitmap;
+public class NumTextView extends View {
+    private Bitmap numBitmap;
     private String text = "98.50";
     private int bitmapWidth;
     private int bitmapHeigth;
@@ -24,24 +24,24 @@ public class ImageTextView extends View {
     private Rect srcRect = new Rect();
     private Paint paint = new Paint();
 
-    public ImageTextView(Context context) {
+    public NumTextView(Context context) {
         this(context, null);
     }
 
-    public ImageTextView(Context context, @Nullable AttributeSet attrs) {
+    public NumTextView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ImageTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public NumTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         init(context);
     }
 
     private void init(Context context) {
-        mBitmap = getBitmapFromResources(context, R.drawable.rodio_numtext);
-        bitmapWidth = mBitmap.getWidth();
-        bitmapHeigth = mBitmap.getHeight();
+        numBitmap = getBitmapFromResources(context, R.drawable.rodio_numtext);
+        bitmapWidth = numBitmap.getWidth();
+        bitmapHeigth = numBitmap.getHeight();
         textWidth = bitmapWidth / 11;
         dstRect.top = 0;
         dstRect.bottom = bitmapHeigth;
@@ -87,7 +87,7 @@ public class ImageTextView extends View {
                     break;
             }
             srcRect.right = textWidth + srcRect.left;
-            canvas.drawBitmap(mBitmap, srcRect, dstRect, paint);
+            canvas.drawBitmap(numBitmap, srcRect, dstRect, paint);
         }
 
     }

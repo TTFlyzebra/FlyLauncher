@@ -44,8 +44,8 @@
       "height":317
     },
     {
-      "packName": "",
-      "className": "",
+      "packName": "com.autochips.fmradio",
+      "className": "com.autochips.fmradio.MainActivity",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page01_default_3.png",
       "focusImageUrl": "file:///android_asset/image/page01_focus_3.png",
@@ -62,8 +62,8 @@
       "height":317
     },
     {
-      "packName": "",
-      "className": "",
+      "packName": "com.autochips.bluetooth",
+      "className": "com.autochips.bluetooth.BluetoothPhoneBookActivity",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page01_default_4.png",
       "focusImageUrl": "file:///android_asset/image/page01_focus_4.png",
@@ -98,8 +98,8 @@
       "height":317
     },
     {
-      "packName": "",
-      "className": "",
+      "packName": "com.autochips.bluetooth",
+      "className": "com.autochips.bluetooth.BluetoothMusicActivity",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page02_default_2.png",
       "focusImageUrl": "file:///android_asset/image/page02_focus_2.png",
