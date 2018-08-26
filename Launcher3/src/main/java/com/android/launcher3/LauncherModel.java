@@ -1562,13 +1562,18 @@ public class LauncherModel extends BroadcastReceiver
 
                 FlyLog.d("xxxxtest start add item");
 
-                if(Launcher.isFirst){
+                SharedPreferences sp = mContext.getSharedPreferences(
+                        LauncherAppState.getSharedPreferencesKey(), Context.MODE_PRIVATE);
+                if(sp.getBoolean("copyallapps",true)){
                     FlyLog.d("xxxxtest isfirst start add item");
                     addScreenAndAddItem(mContext);
                     updateWorkspaceScreenOrder(mContext,loadWorkspaceScreensDb(mContext));
                     resetLoadedState(false, true);
                     startLoaderFromBackground();
                     Launcher.isFirst = false;
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putBoolean("copyallapps", false);
+                    editor.apply();
                 }
             }
 

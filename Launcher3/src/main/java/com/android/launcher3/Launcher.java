@@ -547,13 +547,8 @@ public class Launcher extends Activity
             showIntroScreen();
         } else {
             showFirstRunActivity();
-//            showFirstRunClings();
+            showFirstRunClings();
         }
-
-        LauncherModel model = getModel();
-//                model.resetLoadedState(false, true);
-        model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_NONE);
-
 
     }
 
@@ -4587,32 +4582,25 @@ public class Launcher extends Activity
 
     @Thunk
     void showFirstRunClings() {
-        LauncherModel model = getModel();
-//                model.resetLoadedState(false, true);
-        model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_NONE);
-//        showAppsView(false, false, true, false);
-        return;
         // The two first run cling paths are mutually exclusive, if the launcher is preinstalled
         // on the device, then we always show the first run cling experience (or if there is no
         // launcher2). Otherwise, we prompt the user upon started for migration
-//        LauncherClings launcherClings = new LauncherClings(this);
-//        if (launcherClings.shouldShowFirstRunOrMigrationClings()) {
+        LauncherClings launcherClings = new LauncherClings(this);
+        if (launcherClings.shouldShowFirstRunOrMigrationClings()) {
 //            if (mModel.canMigrateFromOldLauncherDb(this)) {
 //                launcherClings.showMigrationCling();
-////                LauncherModel model = getModel();
-////                model.resetLoadedState(false, true);
-////                model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_CLEAR_WORKSPACE
-////                                | LauncherModel.LOADER_FLAG_MIGRATE_SHORTCUTS);
-////                // Set the flag to skip the folder cling
-////                String spKey = LauncherAppState.getSharedPreferencesKey();
-////                SharedPreferences sp = this.getSharedPreferences(spKey, Context.MODE_PRIVATE);
-////                SharedPreferences.Editor editor = sp.edit();
-////                editor.putBoolean(Launcher.USER_HAS_MIGRATED, true);
-////                editor.apply();
 //            } else {
 //                launcherClings.showLongPressCling(true);
 //            }
-//        }
+            //showAppsView(false, false, true, false);
+            LauncherModel model = getModel();
+            model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_NONE);
+            SharedPreferences sp = getSharedPrefs();
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putBoolean(LauncherClings.WORKSPACE_CLING_DISMISSED_KEY, true);
+            editor.putBoolean(LauncherClings.MIGRATION_CLING_DISMISSED_KEY, true);
+            editor.apply();
+        }
     }
 
     void showWorkspaceSearchAndHotseat() {

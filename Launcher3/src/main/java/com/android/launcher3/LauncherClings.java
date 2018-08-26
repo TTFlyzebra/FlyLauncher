@@ -38,8 +38,8 @@ import android.view.accessibility.AccessibilityManager;
 import com.android.launcher3.util.Thunk;
 
 class LauncherClings implements OnClickListener {
-    private static final String MIGRATION_CLING_DISMISSED_KEY = "cling_gel.migration.dismissed";
-    private static final String WORKSPACE_CLING_DISMISSED_KEY = "cling_gel.workspace.dismissed";
+    public static final String MIGRATION_CLING_DISMISSED_KEY = "cling_gel.migration.dismissed";
+    public static final String WORKSPACE_CLING_DISMISSED_KEY = "cling_gel.workspace.dismissed";
 
     private static final String TAG_CROP_TOP_AND_SIDES = "crop_bg_top_and_sides";
 
