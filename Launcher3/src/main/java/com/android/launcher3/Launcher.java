@@ -426,6 +426,7 @@ public class Launcher extends Activity
         }
     };
 
+    public static boolean isFirst=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (DEBUG_STRICT_MODE) {
@@ -448,6 +449,7 @@ public class Launcher extends Activity
         }
 
         super.onCreate(savedInstanceState);
+        isFirst = true;
 
         LauncherAppState.setApplicationContext(getApplicationContext());
         LauncherAppState app = LauncherAppState.getInstance();
@@ -540,12 +542,18 @@ public class Launcher extends Activity
             }
         }
 
+
         if (shouldShowIntroScreen()) {
             showIntroScreen();
         } else {
             showFirstRunActivity();
-            showFirstRunClings();
+//            showFirstRunClings();
         }
+
+        LauncherModel model = getModel();
+//                model.resetLoadedState(false, true);
+        model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_NONE);
+
 
     }
 
@@ -4579,7 +4587,10 @@ public class Launcher extends Activity
 
     @Thunk
     void showFirstRunClings() {
-        showAppsView(false, false, true, false);
+        LauncherModel model = getModel();
+//                model.resetLoadedState(false, true);
+        model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_NONE);
+//        showAppsView(false, false, true, false);
         return;
         // The two first run cling paths are mutually exclusive, if the launcher is preinstalled
         // on the device, then we always show the first run cling experience (or if there is no

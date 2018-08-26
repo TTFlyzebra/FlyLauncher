@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
 import android.content.pm.ResolveInfo;
@@ -1558,6 +1559,17 @@ public class LauncherModel extends BroadcastReceiver
                 // second step
                 if (DEBUG_LOADERS) Log.d(TAG, "step 2: loading all apps");
                 loadAndBindAllApps();
+
+                FlyLog.d("xxxxtest start add item");
+
+                if(Launcher.isFirst){
+                    FlyLog.d("xxxxtest isfirst start add item");
+                    addScreenAndAddItem(mContext);
+                    updateWorkspaceScreenOrder(mContext,loadWorkspaceScreensDb(mContext));
+                    resetLoadedState(false, true);
+                    startLoaderFromBackground();
+                    Launcher.isFirst = false;
+                }
             }
 
             // Clear out this reference, otherwise we end up holding it until all of the
@@ -3731,5 +3743,33 @@ public class LauncherModel extends BroadcastReceiver
      */
     public static Looper getWorkerLooper() {
         return sWorkerThread.getLooper();
+    }
+
+    public void addScreenAndAddItem(Context mContext){
+        int appNum = mBgAllAppsList.size();
+        int screenNum = (int)Math.ceil((double)appNum/12);  //这里的30是一个workspace桌面能承载的最大app数量，我改的是平板5x6界面所以是30个，这个数量可以在一个地方获得，我还没整理好偷懒直接写了
+        FlyLog.d("xxxxtest screenNum=%d",screenNum);
+        ContentResolver cr = mContext.getContentResolver();
+        Uri uri = LauncherSettings.WorkspaceScreens.CONTENT_URI;  //获取访问数据库的uri
+        cr.delete(uri,null,null);
+        int startNum = 0;
+        for(int i =1;i<=screenNum;i++) {  //这部分算法写的比较拙略，总之就是向不同屏幕id添加app信息
+            FlyLog.d("xxxxtest screen=%d",i);
+            int endNum = Math.min(i*12,appNum);
+            ContentValues v = new ContentValues();
+            v.put(LauncherSettings.WorkspaceScreens._ID, i);
+            v.put(LauncherSettings.WorkspaceScreens.SCREEN_RANK, i-1);
+            cr.insert(uri,v);
+            additem(mContext,startNum,endNum,i);
+            startNum+=12;
+        }
+    }
+    public void additem(Context mContext,int startNum,int endNum,int screen){
+        FlyLog.d("xxxxtest additem startNum=%d,endNum=%d,screen=%d",startNum,endNum,screen);
+        for(int i=startNum;i<endNum;i++){
+            ShortcutInfo shortcutInfo = new ShortcutInfo(mBgAllAppsList.get(i));
+            FlyLog.d("xxxxtest add num=%d screen=%d,cellx=%d,celly=%d,name=%s",i,screen,i%6,(i%12)/6,shortcutInfo.getIntent());
+            addItemToDatabase(mContext,shortcutInfo,-100,screen,i%6,(i%12)/6);
+        }
     }
 }

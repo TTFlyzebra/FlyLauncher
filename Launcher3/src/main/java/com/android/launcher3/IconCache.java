@@ -48,6 +48,7 @@ import com.android.launcher3.compat.UserHandleCompat;
 import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.model.PackageItemInfo;
 import com.android.launcher3.util.ComponentKey;
+import com.android.launcher3.util.FlyLog;
 import com.android.launcher3.util.Thunk;
 
 import java.util.Collections;
@@ -238,6 +239,7 @@ public class IconCache {
     public synchronized void removeIconsForPkg(String packageName, UserHandleCompat user) {
         removeFromMemCacheLocked(packageName, user);
         long userSerial = mUserManager.getSerialNumberForUser(user);
+        FlyLog.d("removeIcons packageName=%s",packageName);
         mIconDb.getWritableDatabase().delete(IconDB.TABLE_NAME,
                 IconDB.COLUMN_COMPONENT + " LIKE ? AND " + IconDB.COLUMN_USER + " = ?",
                 new String[] {packageName + "/%", Long.toString(userSerial)});
@@ -332,6 +334,7 @@ public class IconCache {
         }
         c.close();
         if (!itemsToRemove.isEmpty()) {
+            FlyLog.d("removeIcons itemsToRemove=%s",itemsToRemove.toString());
             mIconDb.getWritableDatabase().delete(IconDB.TABLE_NAME,
                     Utilities.createDbSelectionQuery(IconDB.COLUMN_ROWID, itemsToRemove),
                     null);
@@ -358,12 +361,14 @@ public class IconCache {
      * Updates {@param values} to contain versoning information and adds it to the DB.
      * @param values {@link ContentValues} containing icon & title
      */
-    private void addIconToDB(ContentValues values, ComponentName key,
-            PackageInfo info, long userSerial) {
+    private void addIconToDB(ContentValues values, ComponentName key, PackageInfo info, long userSerial) {
         values.put(IconDB.COLUMN_COMPONENT, key.flattenToString());
         values.put(IconDB.COLUMN_USER, userSerial);
         values.put(IconDB.COLUMN_LAST_UPDATED, info.lastUpdateTime);
         values.put(IconDB.COLUMN_VERSION, info.versionCode);
+        FlyLog.d(values.toString());
+        FlyLog.d("addIconToDB packName=%s",info.packageName);
+
         mIconDb.getWritableDatabase().insertWithOnConflict(IconDB.TABLE_NAME, null, values,
                 SQLiteDatabase.CONFLICT_REPLACE);
     }
@@ -677,6 +682,7 @@ public class IconCache {
                 label, Color.TRANSPARENT);
         values.put(IconDB.COLUMN_COMPONENT, componentName.flattenToString());
         values.put(IconDB.COLUMN_USER, userSerial);
+        FlyLog.d("addIconToDB values=%s",values);
         mIconDb.getWritableDatabase().insertWithOnConflict(IconDB.TABLE_NAME, null, values,
                 SQLiteDatabase.CONFLICT_REPLACE);
     }
