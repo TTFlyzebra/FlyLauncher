@@ -460,8 +460,7 @@ public class Launcher extends Activity
                 app.getInvariantDeviceProfile().landscapeProfile
                 : app.getInvariantDeviceProfile().portraitProfile;
 
-        mSharedPrefs = getSharedPreferences(LauncherAppState.getSharedPreferencesKey(),
-                Context.MODE_PRIVATE);
+        mSharedPrefs = getSharedPreferences(LauncherAppState.getSharedPreferencesKey(),Context.MODE_PRIVATE);
         mIsSafeModeEnabled = getPackageManager().isSafeMode();
         mModel = app.setLauncher(this);
         mIconCache = app.getIconCache();
@@ -547,8 +546,10 @@ public class Launcher extends Activity
             showIntroScreen();
         } else {
             showFirstRunActivity();
-            showFirstRunClings();
+//            showFirstRunClings();
         }
+        LauncherModel model = getModel();
+        model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_NONE);
 
     }
 

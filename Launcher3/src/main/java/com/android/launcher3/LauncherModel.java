@@ -1560,19 +1560,16 @@ public class LauncherModel extends BroadcastReceiver
                 if (DEBUG_LOADERS) Log.d(TAG, "step 2: loading all apps");
                 loadAndBindAllApps();
 
-                FlyLog.d("xxxxtest start add item");
-
-                SharedPreferences sp = mContext.getSharedPreferences(
-                        LauncherAppState.getSharedPreferencesKey(), Context.MODE_PRIVATE);
-                if(sp.getBoolean("copyallapps",true)){
-                    FlyLog.d("xxxxtest isfirst start add item");
+                SharedPreferences sp = mContext.getSharedPreferences(LauncherAppState.getSharedPreferencesKey(), Context.MODE_PRIVATE);
+                if(sp.getBoolean(COPY_ALLAPPS,true)){
+                    FlyLog.d("start copy all apps to workspace");
                     addScreenAndAddItem(mContext);
                     updateWorkspaceScreenOrder(mContext,loadWorkspaceScreensDb(mContext));
                     resetLoadedState(false, true);
                     startLoaderFromBackground();
                     Launcher.isFirst = false;
                     SharedPreferences.Editor editor = sp.edit();
-                    editor.putBoolean("copyallapps", false);
+                    editor.putBoolean(COPY_ALLAPPS, false);
                     editor.apply();
                 }
             }
@@ -3753,13 +3750,13 @@ public class LauncherModel extends BroadcastReceiver
     public void addScreenAndAddItem(Context mContext){
         int appNum = mBgAllAppsList.size();
         int screenNum = (int)Math.ceil((double)appNum/12);  //这里的30是一个workspace桌面能承载的最大app数量，我改的是平板5x6界面所以是30个，这个数量可以在一个地方获得，我还没整理好偷懒直接写了
-        FlyLog.d("xxxxtest screenNum=%d",screenNum);
+        FlyLog.d("copyallapps screenNum=%d",screenNum);
         ContentResolver cr = mContext.getContentResolver();
         Uri uri = LauncherSettings.WorkspaceScreens.CONTENT_URI;  //获取访问数据库的uri
         cr.delete(uri,null,null);
         int startNum = 0;
         for(int i =1;i<=screenNum;i++) {  //这部分算法写的比较拙略，总之就是向不同屏幕id添加app信息
-            FlyLog.d("xxxxtest screen=%d",i);
+            FlyLog.d("copyallapps screen=%d",i);
             int endNum = Math.min(i*12,appNum);
             ContentValues v = new ContentValues();
             v.put(LauncherSettings.WorkspaceScreens._ID, i);
@@ -3769,11 +3766,13 @@ public class LauncherModel extends BroadcastReceiver
             startNum+=12;
         }
     }
+
+    private static final String COPY_ALLAPPS = "FLY_COPY_ALL_APPS2";
     public void additem(Context mContext,int startNum,int endNum,int screen){
-        FlyLog.d("xxxxtest additem startNum=%d,endNum=%d,screen=%d",startNum,endNum,screen);
+        FlyLog.d("copyallapps additem startNum=%d,endNum=%d,screen=%d",startNum,endNum,screen);
         for(int i=startNum;i<endNum;i++){
             ShortcutInfo shortcutInfo = new ShortcutInfo(mBgAllAppsList.get(i));
-            FlyLog.d("xxxxtest add num=%d screen=%d,cellx=%d,celly=%d,name=%s",i,screen,i%6,(i%12)/6,shortcutInfo.getIntent());
+            FlyLog.d("copyallapps add num=%d screen=%d,cellx=%d,celly=%d,name=%s",i,screen,i%6,(i%12)/6,shortcutInfo.getIntent());
             addItemToDatabase(mContext,shortcutInfo,-100,screen,i%6,(i%12)/6);
         }
     }
