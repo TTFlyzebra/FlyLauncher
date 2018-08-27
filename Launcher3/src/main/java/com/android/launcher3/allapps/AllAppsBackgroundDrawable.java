@@ -23,8 +23,8 @@ import android.graphics.ColorFilter;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-
 import android.view.Gravity;
+
 import com.android.launcher3.R;
 
 /**

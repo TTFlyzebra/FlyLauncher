@@ -15,7 +15,6 @@
  */
 package com.android.launcher3.allapps;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
