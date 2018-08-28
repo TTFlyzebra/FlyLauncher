@@ -17,6 +17,7 @@
 package com.android.launcher3;
 
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -386,14 +387,25 @@ public class IconCache {
 
         if (list != null && !list.isEmpty()) {
 //        LauncherModel.addItemToDatabase(mContext,new ShortcutInfo(list.get(0)),-100,2,5,1);
-//
 //        Launcher launcher = (Launcher) mContext;
-//
 //        launcher.getModel().resetLoadedState(false, true);
 //        launcher.getModel().startLoaderFromBackground();
 
             LauncherAppState app = LauncherAppState.getInstance();
-            app.getModel().addAndBindAddedWorkspaceItems(mContext, list);
+            LauncherModel model = app.getModel();
+            final ContentResolver cr = mContext.getContentResolver();
+            int sum = list.size();
+            for (int i = sum - 1; i >= 0; i--) {
+                Intent intent = list.get(i).intent;
+                String uri = (intent != null ? intent.toUri(0) : null);
+                Cursor c = cr.query(LauncherSettings.Favorites.CONTENT_URI, null,
+                        "intent = " + uri,
+                        null, null);
+                if (c.moveToNext()) {
+                    list.remove(i);
+                }
+            }
+            model.addAndBindAddedWorkspaceItems(mContext, list);
         }
 
         mIconDb.getWritableDatabase().insertWithOnConflict(IconDB.TABLE_NAME, null, values,

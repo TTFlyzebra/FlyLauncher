@@ -1115,7 +1115,7 @@ public class LauncherModel extends BroadcastReceiver
     /**
      * Removes all the items from the database corresponding to the specified package.
      */
-    public static void deletePackageFromDatabase(Context context, final String pn,
+    static void deletePackageFromDatabase(Context context, final String pn,
                                           final UserHandleCompat user) {
         deleteItemsFromDatabase(context, getItemsByPackageName(pn, user));
     }
