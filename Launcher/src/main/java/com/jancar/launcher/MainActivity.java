@@ -21,30 +21,11 @@ import java.util.Comparator;
 public class MainActivity extends Activity {
     private LauncherView launcherView;
     private NavForViewPager naviForViewPager;
-//    private ICManager mICManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//
-//        mICManager = ICManager.getICManager();
-//        mICManager.connect(this, new ICManager.ServiceListener() {
-//            @Override
-//            public void onStateChange(int i) {
-//                ICMessage msg = ICMessage.obtain();
-//                msg.setCMD(ICMessage.CMD_REGISTER_APP).setInteger(ICMessage.SourceIndex_Launcher);
-//                mICManager.talkWithService(msg);
-//            }
-//
-//            @Override
-//            public ICMessage handleMessage(ICMessage icMessage) {
-//                return null;
-//            }
-//        });
-
         setContentView(R.layout.activity_main);
-
-
         launcherView = (LauncherView) findViewById(R.id.ac_main_launcherview);
         naviForViewPager = (NavForViewPager) findViewById(R.id.ac_main_navforviewpager);
         String jsonStr = getAssetFileText("data.json",this);
@@ -64,12 +45,13 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void onBackPressed() {
+//        BlurDrawable blurDrawable = new BlurDrawable(this);
+//        blurDrawable.setBlurRadius(9); //模糊半径12，越大图片越平均
+//        blurDrawable.setDownsampleFactor(2); //图片抽样率，这里把图片缩放小了8倍
+//        blurDrawable.setOverlayColor(Color.argb(150, 0x0, 0x0, 0x0)); //模糊后再覆盖的一层颜色
+//        blurDrawable.setDrawOffset(0,0); //顶部View与底部View的相对坐标差，由于这里都是(0,0)起步，所以相对位置偏移为0
+//        launcherView.setBackgroundDrawable(blurDrawable);
 //        super.onBackPressed();
         return;
     }

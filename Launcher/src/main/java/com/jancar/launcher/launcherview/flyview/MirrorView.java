@@ -1,6 +1,5 @@
 package com.jancar.launcher.launcherview.flyview;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
@@ -19,7 +18,6 @@ import java.util.concurrent.Executors;
  * E-mail:lizy@ppfuns.com
  * 倒影显示控件
  */
-@SuppressLint("AppCompatCustomView")
 public class MirrorView extends ImageView {
     private int mRefHeight = 60;
     private Handler mHander = new Handler(Looper.getMainLooper());

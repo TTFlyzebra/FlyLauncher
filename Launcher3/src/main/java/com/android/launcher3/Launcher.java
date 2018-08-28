@@ -106,12 +106,12 @@ import com.android.launcher3.compat.UserHandleCompat;
 import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.model.WidgetsModel;
 import com.android.launcher3.util.ComponentKey;
-import com.android.launcher3.util.FlyLog;
 import com.android.launcher3.util.LongArrayMap;
 import com.android.launcher3.util.Thunk;
 import com.android.launcher3.widget.PendingAddWidgetInfo;
 import com.android.launcher3.widget.WidgetHostViewLoader;
 import com.android.launcher3.widget.WidgetsContainerView;
+import com.flyzebra.utils.FlyLog;
 
 import java.io.File;
 import java.io.FileDescriptor;
