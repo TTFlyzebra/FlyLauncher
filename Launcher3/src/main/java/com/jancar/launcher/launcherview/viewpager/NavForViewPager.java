@@ -9,7 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.jancar.launcher.R;
+import com.android.launcher3.R;
 
 
 /**
@@ -95,7 +95,7 @@ public class NavForViewPager extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (sumItem > 0) {
-            float x = width / 2 - (sumItem * circleWidth * 2 - circleWidth) / 2 + circleWidth / 2;
+            float x = width / 2 - (sumItem * circleWidth * 2 - circleWidth) / 2 ;
             for (int i = 0; i < sumItem; i++) {
                 if (i == currentItem) {
                     if(nav_on==null){

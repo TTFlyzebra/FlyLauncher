@@ -1,37 +1,18 @@
 package com.flyzebra.utils;
-
 import android.util.Log;
-
 /**
- *
- * Created by FlyZebra on 2016/3/24.
+ * Author: FlyZebra
+ * Created by FlyZebra on 2018/3/28-下午3:28.
  */
 public class FlyLog {
-    public static final String TAG = "com.flyzebra";
+    public static final String TAG = "com.flyzebra.log";
     public static String[] filter = {
-//            "<MyOkHttp>",
-//            "<NavLayout>",
-//            "<DiskCache>",
-//            "<TvPageLayout>",
-//            "<AdsEntity>",
-//            "<AdsCellView>",
-//            "<LauncherActivity>"
     };
 
-
-    public static void i(String logString, Object... args) {
-        for (String aFilter : filter) {
-            if (logString.indexOf(aFilter) == 0) {
-                return;
-            }
-        }
-        Log.i(TAG, buildLogString(logString, args));
-    }
-
     public static void d() {
-        Log.d(TAG, buildLogString(""));
+        String s = buildLogString("");
+        Log.d(TAG, s);
     }
-
 
     public static void d(String logString, Object... args) {
         for (String aFilter : filter) {
@@ -39,7 +20,29 @@ public class FlyLog {
                 return;
             }
         }
-        Log.d(TAG, buildLogString(logString, args));
+        String s = buildLogString(logString, args);
+        Log.d(TAG, s);
+    }
+
+    public static void i() {
+        String s = buildLogString("");
+        Log.i(TAG, s);
+    }
+
+    public static void i(String logString, Object... args) {
+        for (String aFilter : filter) {
+            if (logString.indexOf(aFilter) == 0) {
+                return;
+            }
+        }
+        String s = buildLogString(logString, args);
+        Log.i(TAG, s);
+    }
+
+
+    public static void v() {
+        String s = buildLogString("");
+        Log.v(TAG, s);
     }
 
     public static void v(String logString, Object... args) {
@@ -48,7 +51,14 @@ public class FlyLog {
                 return;
             }
         }
-        Log.v(TAG, buildLogString(logString, args));
+        String s = buildLogString(logString, args);
+        Log.v(TAG, s);
+    }
+
+
+    public static void e() {
+        String s = buildLogString("");
+        Log.e(TAG, s);
     }
 
     public static void e(String logString, Object... args) {
@@ -57,7 +67,23 @@ public class FlyLog {
                 return;
             }
         }
-        Log.e(TAG, buildLogString(logString, args));
+        String s = buildLogString(logString, args);
+        Log.e(TAG, s);
+    }
+
+    public static void w() {
+        String s = buildLogString("");
+        Log.w(TAG, s);
+    }
+
+    public static void w(String logString, Object... args) {
+        for (String aFilter : filter) {
+            if (logString.indexOf(aFilter) == 0) {
+                return;
+            }
+        }
+        String s = buildLogString(logString, args);
+        Log.w(TAG, s);
     }
 
 
@@ -86,8 +112,6 @@ public class FlyLog {
                 .append("()")
                 .append(">>>>")
                 .append(str);
-//        }
         return stringBuilder.toString();
     }
-
 }

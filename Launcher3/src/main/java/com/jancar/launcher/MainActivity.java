@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 
+import com.android.launcher3.R;
 import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.bean.PageBean;
 import com.jancar.launcher.launcherview.viewpager.LauncherView;

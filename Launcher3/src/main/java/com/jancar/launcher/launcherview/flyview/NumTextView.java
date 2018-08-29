@@ -10,7 +10,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.jancar.launcher.R;
+import com.android.launcher3.R;
 
 public class NumTextView extends View {
     private Bitmap numBitmap;

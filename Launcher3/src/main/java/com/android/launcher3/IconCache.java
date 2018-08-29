@@ -17,7 +17,6 @@
 package com.android.launcher3;
 
 import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -42,6 +41,7 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Pair;
 
 import com.android.launcher3.compat.LauncherActivityInfoCompat;
 import com.android.launcher3.compat.LauncherAppsCompat;
@@ -51,7 +51,6 @@ import com.android.launcher3.model.PackageItemInfo;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.Thunk;
 import com.flyzebra.utils.FlyLog;
-import com.flyzebra.utils.PMUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,6 +60,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.Stack;
+
+import static com.android.launcher3.LauncherModel.addItemToDatabase;
+import static com.android.launcher3.LauncherModel.deleteItemFromDatabase;
+import static com.android.launcher3.LauncherModel.loadWorkspaceScreensDb;
+import static com.android.launcher3.LauncherModel.runOnWorkerThread;
+import static com.android.launcher3.LauncherModel.sBgLock;
 
 /**
  * Cache of application icons.  Icons can be made from any thread.
@@ -252,7 +257,7 @@ public class IconCache {
         mIconDb.getWritableDatabase().delete(IconDB.TABLE_NAME,
                 IconDB.COLUMN_COMPONENT + " LIKE ? AND " + IconDB.COLUMN_USER + " = ?",
                 new String[]{packageName + "/%", Long.toString(userSerial)});
-//        LauncherModel.deletePackageFromDatabase(mContext,packageName,user);
+        LauncherModel.deletePackageFromDatabase(mContext,packageName,user);
     }
 
     public void updateDbIcons(Set<String> ignorePackagesForMainUser) {
@@ -380,33 +385,15 @@ public class IconCache {
         values.put(IconDB.COLUMN_USER, userSerial);
         values.put(IconDB.COLUMN_LAST_UPDATED, info.lastUpdateTime);
         values.put(IconDB.COLUMN_VERSION, info.versionCode);
-        FlyLog.d(values.toString());
-        FlyLog.d("addIconToDB packName=%s", info.packageName);
-
-        ArrayList<AppInfo> list = (ArrayList<AppInfo>) PMUtils.getAppInfos(info.packageName, mContext, this);
-
-        if (list != null && !list.isEmpty()) {
-//        LauncherModel.addItemToDatabase(mContext,new ShortcutInfo(list.get(0)),-100,2,5,1);
-//        Launcher launcher = (Launcher) mContext;
-//        launcher.getModel().resetLoadedState(false, true);
-//        launcher.getModel().startLoaderFromBackground();
-
-            LauncherAppState app = LauncherAppState.getInstance();
-            LauncherModel model = app.getModel();
-            final ContentResolver cr = mContext.getContentResolver();
-            int sum = list.size();
-            for (int i = sum - 1; i >= 0; i--) {
-                Intent intent = list.get(i).intent;
-                String uri = (intent != null ? intent.toUri(0) : null);
-                Cursor c = cr.query(LauncherSettings.Favorites.CONTENT_URI, null,
-                        "intent = " + uri,
-                        null, null);
-                if (c.moveToNext()) {
-                    list.remove(i);
-                }
-            }
-            model.addAndBindAddedWorkspaceItems(mContext, list);
-        }
+//        FlyLog.d("addIconToDB packName=%s", info.packageName);
+//        ArrayList<AppInfo> list = (ArrayList<AppInfo>) PMUtils.getAppInfos(info.packageName, mContext, this);
+//        if (list != null && !list.isEmpty()) {
+//            FlyLog.d("add size=%d,list = %s", list.size(),list.toString());
+//            final ContentResolver cr = mContext.getContentResolver();
+//            Cursor c = cr.query(LauncherSettings.Favorites.CONTENT_URI, null,null,null, null);
+//            FlyLog.d("quere data = %s",c.toString());
+//            addAndBindAddedWorkspaceItems(mContext, list);
+//        }
 
         mIconDb.getWritableDatabase().insertWithOnConflict(IconDB.TABLE_NAME, null, values,
                 SQLiteDatabase.CONFLICT_REPLACE);
@@ -928,5 +915,93 @@ public class IconCache {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public void addAndBindAddedWorkspaceItems(final Context context, final ArrayList<? extends ItemInfo> workspaceApps) {
+        LauncherAppState app = LauncherAppState.getInstance();
+        if (app == null) return;
+        final LauncherModel model = app.getModel();
+        if (model == null) return;
+        final LauncherModel.Callbacks callbacks = model.getCallback();
+        if (workspaceApps.isEmpty()) {
+            return;
+        }
+        // Process the newly added applications and add them to the database first
+        Runnable r = new Runnable() {
+            public void run() {
+                final ArrayList<ItemInfo> addedShortcutsFinal = new ArrayList<ItemInfo>();
+                final ArrayList<Long> addedWorkspaceScreensFinal = new ArrayList<Long>();
+
+                // Get the list of workspace screens.  We need to append to this list and
+                // can not use sBgWorkspaceScreens because loadWorkspace() may not have been
+                // called.
+                ArrayList<Long> workspaceScreens = loadWorkspaceScreensDb(context);
+                synchronized (sBgLock) {
+                    for (ItemInfo item : workspaceApps) {
+                        if (item instanceof ShortcutInfo) {
+                            // Short-circuit this logic if the icon exists somewhere on the workspace
+                            if (model.shortcutExists(context, item.getIntent(), item.user)) {
+                                continue;
+                            }
+                        }
+
+                        // Find appropriate space for the item.
+                        Pair<Long, int[]> coords = model.findSpaceForItem(context,
+                                workspaceScreens, addedWorkspaceScreensFinal,
+                                1, 1);
+                        long screenId = coords.first;
+                        int[] cordinates = coords.second;
+
+                        ItemInfo itemInfo;
+                        if (item instanceof ShortcutInfo || item instanceof FolderInfo) {
+                            itemInfo = item;
+                        } else if (item instanceof AppInfo) {
+                            itemInfo = ((AppInfo) item).makeShortcut();
+                        } else {
+                            throw new RuntimeException("Unexpected info type");
+                        }
+
+                        deleteItemFromDatabase(context,itemInfo);
+
+                        // Add the shortcut to the db
+                        addItemToDatabase(context, itemInfo, LauncherSettings.Favorites.CONTAINER_DESKTOP,
+                                screenId, cordinates[0], cordinates[1]);
+                        FlyLog.d("addItemToDatabase title=%s,container=%d,screen=%d,x=%d,y=%d\nintent=%s",
+                                itemInfo.title,LauncherSettings.Favorites.CONTAINER_DESKTOP,screenId,cordinates[0],cordinates[1],itemInfo.getIntent().toString());
+                        // Save the ShortcutInfo for binding in the workspace
+                        addedShortcutsFinal.add(itemInfo);
+                    }
+                }
+
+                // Update the workspace screens
+                model.updateWorkspaceScreenOrder(context, workspaceScreens);
+
+                if (!addedShortcutsFinal.isEmpty()) {
+                    model.runOnMainThread(new Runnable() {
+                        public void run() {
+                            LauncherModel.Callbacks cb = model.getCallback();
+                            if (callbacks == cb && cb != null) {
+                                final ArrayList<ItemInfo> addAnimated = new ArrayList<ItemInfo>();
+                                final ArrayList<ItemInfo> addNotAnimated = new ArrayList<ItemInfo>();
+                                if (!addedShortcutsFinal.isEmpty()) {
+                                    ItemInfo info = addedShortcutsFinal.get(addedShortcutsFinal.size() - 1);
+                                    long lastScreenId = info.screenId;
+                                    for (ItemInfo i : addedShortcutsFinal) {
+                                        if (i.screenId == lastScreenId) {
+                                            addAnimated.add(i);
+                                        } else {
+                                            addNotAnimated.add(i);
+                                        }
+                                    }
+                                }
+                                callbacks.bindAppsAdded(addedWorkspaceScreensFinal,
+                                        addNotAnimated, addAnimated, null);
+                            }
+                        }
+                    });
+                }
+            }
+        };
+        runOnWorkerThread(r);
     }
 }

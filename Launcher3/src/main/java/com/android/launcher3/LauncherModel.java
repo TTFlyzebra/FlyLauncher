@@ -546,6 +546,7 @@ public class LauncherModel extends BroadcastReceiver
     }
 
     /**
+     * @FlyZebra 添加icon到数据库和workspace
      * Adds the provided items to the workspace.
      */
     public void addAndBindAddedWorkspaceItems(final Context context,
@@ -2108,8 +2109,8 @@ public class LauncherModel extends BroadcastReceiver
                                         info.rank = c.getInt(rankIndex);
                                         info.spanX = 1;
                                         info.spanY = 1;
-                                        FlyLog.d("screenIndex=%d,cellXIndex=%d,cellYIndex=%d", screenIndex, cellXIndex, cellYIndex);
-                                        FlyLog.d("screenId=%d,cellX=%d,cellY=%d", info.screenId, info.cellX, info.cellY);
+//                                        FlyLog.d("screenIndex=%d,cellXIndex=%d,cellYIndex=%d", screenIndex, cellXIndex, cellYIndex);
+//                                        FlyLog.d("screenId=%d,cellX=%d,cellY=%d", info.screenId, info.cellX, info.cellY);
                                         info.intent.putExtra(ItemInfo.EXTRA_PROFILE, serialNumber);
                                         if (info.promisedIntent != null) {
                                             info.promisedIntent.putExtra(ItemInfo.EXTRA_PROFILE, serialNumber);

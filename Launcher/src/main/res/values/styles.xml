@@ -1,6 +1,0 @@
-<resources>
-
-    <style name="AppTheme" parent="@android:style/Theme.Holo.Wallpaper.NoTitleBar">
-        <item name="android:windowActionBar">false</item>
-    </style>
-</resources>

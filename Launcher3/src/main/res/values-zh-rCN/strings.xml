@@ -19,6 +19,7 @@
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="application_name" msgid="5181331383435256801">"Launcher3"</string>
+    <string name="app_name2">应用商店</string>
     <string name="folder_name" msgid="7371454440695724752"></string>
     <string name="work_folder_name" msgid="3753320833950115786">"Work"</string>
     <string name="activity_not_found" msgid="8071924732094499514">"未安装该应用。"</string>
@@ -98,4 +99,5 @@
     <string name="action_decrease_width" msgid="1374549771083094654">"减小宽度"</string>
     <string name="action_decrease_height" msgid="282377193880900022">"减小高度"</string>
     <string name="widget_resized" msgid="9130327887929620">"小部件尺寸已调整为：宽度 <xliff:g id="NUMBER_0">%1$s</xliff:g>，高度 <xliff:g id="NUMBER_1">%2$s</xliff:g>"</string>
+    <string name="startAppFailed">启动应用失败</string>
 </resources>

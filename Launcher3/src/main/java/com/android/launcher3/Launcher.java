@@ -111,7 +111,6 @@ import com.android.launcher3.util.Thunk;
 import com.android.launcher3.widget.PendingAddWidgetInfo;
 import com.android.launcher3.widget.WidgetHostViewLoader;
 import com.android.launcher3.widget.WidgetsContainerView;
-import com.flyzebra.utils.FlyLog;
 
 import java.io.File;
 import java.io.FileDescriptor;
@@ -3882,8 +3881,8 @@ public class Launcher extends Activity
                     throw new RuntimeException("Invalid Item Type");
             }
 
-            FlyLog.d("add view,container=%d,screenId=%d,cellX=%d,cellY=%d",
-                    item.container, item.screenId, item.cellX, item.cellY);
+//            FlyLog.d("add view,container=%d,screenId=%d,cellX=%d,cellY=%d",
+//                    item.container, item.screenId, item.cellX, item.cellY);
 
             workspace.addInScreenFromBind(view, item.container, item.screenId, item.cellX,
                     item.cellY, 1, 1);

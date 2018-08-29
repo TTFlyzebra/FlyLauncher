@@ -1,4 +1,1 @@
-include ':Launcher',
-        ':Launcher3',
-//        'Launcher2',
-        ':wallpaperpick'
+include ':Launcher3',':wallpaperpick'

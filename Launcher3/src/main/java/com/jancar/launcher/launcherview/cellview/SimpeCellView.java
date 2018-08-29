@@ -14,10 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.launcher3.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.jancar.launcher.R;
 import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.launcherview.flyview.FlyImageView;
 import com.jancar.launcher.launcherview.flyview.FlyTextView;
