@@ -51,6 +51,7 @@ public class MainActivity extends Activity {
                 launcherView.setData(pageBean);
                 naviForViewPager.setViewPager(launcherView);
             }
+            isFirst = false;
         }
     }
 

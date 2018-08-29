@@ -548,7 +548,6 @@ public class Launcher extends Activity
         }
         if(MainActivity.isFirst) {
             startActivity(new Intent(this, MainActivity.class));
-            MainActivity.isFirst = false;
         }
 
     }
