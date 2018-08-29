@@ -111,6 +111,7 @@ import com.android.launcher3.util.Thunk;
 import com.android.launcher3.widget.PendingAddWidgetInfo;
 import com.android.launcher3.widget.WidgetHostViewLoader;
 import com.android.launcher3.widget.WidgetsContainerView;
+import com.jancar.launcher.MainActivity;
 
 import java.io.File;
 import java.io.FileDescriptor;
@@ -425,7 +426,6 @@ public class Launcher extends Activity
         }
     };
 
-    public static boolean isFirst=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (DEBUG_STRICT_MODE) {
@@ -448,9 +448,8 @@ public class Launcher extends Activity
         }
 
         super.onCreate(savedInstanceState);
-        isFirst = true;
 
-        LauncherAppState.setApplicationContext(getApplicationContext());
+//        LauncherAppState.setApplicationContext(getApplicationContext());
         LauncherAppState app = LauncherAppState.getInstance();
 
         // Load configuration-specific DeviceProfile
@@ -547,8 +546,10 @@ public class Launcher extends Activity
             showFirstRunActivity();
 //            showFirstRunClings();
         }
-        LauncherModel model = getModel();
-        model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_NONE);
+        if(MainActivity.isFirst) {
+            startActivity(new Intent(this, MainActivity.class));
+            MainActivity.isFirst = false;
+        }
 
     }
 
@@ -2470,7 +2471,8 @@ public class Launcher extends Activity
         if (isAppsViewVisible()) {
             showWorkspace(true);
         } else {
-            super.onBackPressed();
+//            super.onBackPressed();
+            startActivity(new Intent(this,MainActivity.class));
         }
 //        if (mLauncherCallbacks != null && mLauncherCallbacks.handleBackPressed()) {
 //            return;

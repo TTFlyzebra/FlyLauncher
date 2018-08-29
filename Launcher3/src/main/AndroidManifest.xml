@@ -63,6 +63,7 @@
     <uses-permission android:name="com.android.launcher3.permission.RECEIVE_FIRST_LOAD_BROADCAST" />
 
     <application
+        android:name=".MyApp"
         android:allowBackup="@bool/enable_backup"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher_round"

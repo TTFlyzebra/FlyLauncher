@@ -32,6 +32,7 @@ import android.provider.Settings;
 
 import com.android.launcher3.Utilities;
 import com.android.launcher3.util.Thunk;
+import com.flyzebra.utils.FlyLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,6 +148,7 @@ public class LauncherAppsCompatV16 extends LauncherAppsCompat {
 
     @Thunk class PackageMonitor extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
+            FlyLog.d("Receiver Intent Action=%s",intent.getAction());
             final String action = intent.getAction();
             final UserHandleCompat user = UserHandleCompat.myUserHandle();
 

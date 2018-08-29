@@ -2,9 +2,11 @@ package com.jancar.launcher;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 
+import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.bean.PageBean;
@@ -22,26 +24,33 @@ import java.util.Comparator;
 public class MainActivity extends Activity {
     private LauncherView launcherView;
     private NavForViewPager naviForViewPager;
+    public static boolean isFirst=true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        launcherView = (LauncherView) findViewById(R.id.ac_main_launcherview);
-        naviForViewPager = (NavForViewPager) findViewById(R.id.ac_main_navforviewpager);
-        String jsonStr = getAssetFileText("data.json",this);
-        PageBean pageBean = GsonUtils.json2Object(jsonStr,PageBean.class);
+        if(isFirst){
+            startActivity(new Intent(this,Launcher.class));
+            finish();
+        }else {
+            setContentView(R.layout.activity_main);
+            launcherView = (LauncherView) findViewById(R.id.ac_main_launcherview);
+            naviForViewPager = (NavForViewPager) findViewById(R.id.ac_main_navforviewpager);
+            String jsonStr = getAssetFileText("data.json", this);
+            PageBean pageBean = GsonUtils.json2Object(jsonStr, PageBean.class);
 
-        if(pageBean!=null&&pageBean.cells!=null) {
-            //排序
-            Collections.sort(pageBean.cells, new Comparator<CellBean>() {
-                @Override
-                public int compare(CellBean lhs, CellBean rhs) {
-                    return lhs.sort - rhs.sort;
-                }
-            });
-            launcherView.setData(pageBean);
-            naviForViewPager.setViewPager(launcherView);
+            if (pageBean != null && pageBean.cells != null) {
+                //排序
+                Collections.sort(pageBean.cells, new Comparator<CellBean>() {
+                    @Override
+                    public int compare(CellBean lhs, CellBean rhs) {
+                        return lhs.sort - rhs.sort;
+                    }
+                });
+                launcherView.setData(pageBean);
+                naviForViewPager.setViewPager(launcherView);
+            }
         }
     }
 
@@ -71,4 +80,9 @@ public class MainActivity extends Activity {
         return stringBuilder.toString();
     }
 
+    @Override
+    protected void onDestroy() {
+        isFirst = true;
+        super.onDestroy();
+    }
 }

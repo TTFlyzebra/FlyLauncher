@@ -51,6 +51,7 @@ import com.android.launcher3.model.PackageItemInfo;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.Thunk;
 import com.flyzebra.utils.FlyLog;
+import com.jancar.launcher.data.Const;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -257,7 +258,6 @@ public class IconCache {
         mIconDb.getWritableDatabase().delete(IconDB.TABLE_NAME,
                 IconDB.COLUMN_COMPONENT + " LIKE ? AND " + IconDB.COLUMN_USER + " = ?",
                 new String[]{packageName + "/%", Long.toString(userSerial)});
-        LauncherModel.deletePackageFromDatabase(mContext,packageName,user);
     }
 
     public void updateDbIcons(Set<String> ignorePackagesForMainUser) {
@@ -381,20 +381,17 @@ public class IconCache {
      * @param values {@link ContentValues} containing icon & title
      */
     private void addIconToDB(ContentValues values, ComponentName key, PackageInfo info, long userSerial) {
+        for(String packName: Const.FILTER_PACKNAMES){
+            if(packName.equals(info.packageName)){
+                FlyLog.i("filter packname, packName=%s", info.packageName);
+                return;
+            }
+        }
         values.put(IconDB.COLUMN_COMPONENT, key.flattenToString());
         values.put(IconDB.COLUMN_USER, userSerial);
         values.put(IconDB.COLUMN_LAST_UPDATED, info.lastUpdateTime);
         values.put(IconDB.COLUMN_VERSION, info.versionCode);
-//        FlyLog.d("addIconToDB packName=%s", info.packageName);
-//        ArrayList<AppInfo> list = (ArrayList<AppInfo>) PMUtils.getAppInfos(info.packageName, mContext, this);
-//        if (list != null && !list.isEmpty()) {
-//            FlyLog.d("add size=%d,list = %s", list.size(),list.toString());
-//            final ContentResolver cr = mContext.getContentResolver();
-//            Cursor c = cr.query(LauncherSettings.Favorites.CONTENT_URI, null,null,null, null);
-//            FlyLog.d("quere data = %s",c.toString());
-//            addAndBindAddedWorkspaceItems(mContext, list);
-//        }
-
+        FlyLog.d("add icon to DB, packName=%s", info.packageName);
         mIconDb.getWritableDatabase().insertWithOnConflict(IconDB.TABLE_NAME, null, values,
                 SQLiteDatabase.CONFLICT_REPLACE);
     }
@@ -712,7 +709,6 @@ public class IconCache {
                 label, Color.TRANSPARENT);
         values.put(IconDB.COLUMN_COMPONENT, componentName.flattenToString());
         values.put(IconDB.COLUMN_USER, userSerial);
-        FlyLog.d("addIconToDB values=%s", values);
         mIconDb.getWritableDatabase().insertWithOnConflict(IconDB.TABLE_NAME, null, values,
                 SQLiteDatabase.CONFLICT_REPLACE);
     }

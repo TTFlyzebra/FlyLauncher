@@ -237,12 +237,11 @@ public class CommondUtils {
     }
 
     public static boolean execStartPackage(Context context, String packageName, String className, String data, int flag) {
+        FlyLog.d("execStartPackage packageName:" + packageName + " className:" + className);
         try {
             if (TextUtils.isEmpty(packageName) || TextUtils.isEmpty(className)) {
-                FlyLog.d("execStartPackage packageName or className is null");
                 return false;
             }
-            FlyLog.d("execStartPackage packageName:" + packageName + " className:" + className);
             Intent intent = new Intent();
             intent.addFlags(flag);
             ComponentName cn = new ComponentName(packageName, className);

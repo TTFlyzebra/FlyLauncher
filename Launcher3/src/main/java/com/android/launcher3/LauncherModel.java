@@ -68,6 +68,8 @@ import com.android.launcher3.util.LongArrayMap;
 import com.android.launcher3.util.ManagedProfileHeuristic;
 import com.android.launcher3.util.Thunk;
 import com.flyzebra.utils.FlyLog;
+import com.flyzebra.utils.PMUtils;
+import com.jancar.launcher.data.Const;
 
 import java.lang.ref.WeakReference;
 import java.net.URISyntaxException;
@@ -551,6 +553,7 @@ public class LauncherModel extends BroadcastReceiver
      */
     public void addAndBindAddedWorkspaceItems(final Context context,
                                               final ArrayList<? extends ItemInfo> workspaceApps) {
+        FlyLog.i("addAndBindAddedWorkspaceItems size=%d", workspaceApps == null ? 0 : workspaceApps.size());
         final Callbacks callbacks = getCallback();
         if (workspaceApps.isEmpty()) {
             return;
@@ -1037,6 +1040,8 @@ public class LauncherModel extends BroadcastReceiver
      */
     public static void addItemToDatabase(Context context, final ItemInfo item, final long container,
                                          final long screenId, final int cellX, final int cellY) {
+        FlyLog.d("addItemToDatabase container=%d,screenId=%d,cellX=%d,cellY=%d,intent=%s", container, screenId, cellX, cellY, item.getIntent().toString());
+
         item.container = container;
         item.cellX = cellX;
         item.cellY = cellY;
@@ -1324,6 +1329,7 @@ public class LauncherModel extends BroadcastReceiver
      */
     @Override
     public void onReceive(Context context, Intent intent) {
+        FlyLog.d("Receiver Intent Action=%s", intent.getAction());
         if (DEBUG_RECEIVER) Log.d(TAG, "onReceive intent=" + intent);
 
         final String action = intent.getAction();
@@ -1625,7 +1631,6 @@ public class LauncherModel extends BroadcastReceiver
                     updateWorkspaceScreenOrder(mContext, loadWorkspaceScreensDb(mContext));
                     resetLoadedState(false, true);
                     startLoaderFromBackground();
-                    Launcher.isFirst = false;
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putBoolean(COPY_ALLAPPS, false);
                     editor.apply();
@@ -3088,6 +3093,7 @@ public class LauncherModel extends BroadcastReceiver
         public static final int OP_UPDATE = 2;
         public static final int OP_REMOVE = 3; // uninstlled
         public static final int OP_UNAVAILABLE = 4; // external media unmounted
+        public String[] tem = {"OP_NONE", "OP_ADD", "OP_UPDATE", "OP_REMOVE", "OP_UNAVAILABLE"};
 
 
         public PackageUpdatedTask(int op, String[] packages, UserHandleCompat user) {
@@ -3097,8 +3103,12 @@ public class LauncherModel extends BroadcastReceiver
         }
 
         public void run() {
+            for (String packName : mPackages) {
+                FlyLog.d("packname=%s,OP=%s", packName, tem[mOp]);
+            }
             if (!mHasLoaderCompletedOnce) {
                 // Loader has not yet run.
+                FlyLog.d("Loader has not yet run.");
                 return;
             }
             final Context context = mApp.getContext();
@@ -3108,9 +3118,27 @@ public class LauncherModel extends BroadcastReceiver
             switch (mOp) {
                 case OP_ADD: {
                     for (int i = 0; i < N; i++) {
+                        FlyLog.i("OP_ADD, packName=%s", packages[i]);
                         if (DEBUG_LOADERS) Log.d(TAG, "mAllAppsList.addPackage " + packages[i]);
                         mIconCache.updateIconsForPkg(packages[i], mUser);
                         mBgAllAppsList.addPackage(context, packages[i], mUser);
+
+                        //添加图标到桌面
+                        boolean flag = false;
+                        for (String packName : Const.FILTER_PACKNAMES) {
+                            if (packName.equals(packages[i])) {
+                                flag = true;
+                                FlyLog.i("filter packname, packName=%s", packages[i]);
+                                break;
+                            }
+                        }
+                        if (!flag) {
+                            ArrayList<AppInfo> list = (ArrayList<AppInfo>) PMUtils.getAppInfos(packages[i], context, mIconCache);
+                            if (list != null && !list.isEmpty()) {
+                                FlyLog.i("OP_ADD, addAndBindAddedWorkspaceItems=%s", packages[i]);
+                                addAndBindAddedWorkspaceItems(context, list);
+                            }
+                        }
                     }
 
                     ManagedProfileHeuristic heuristic = ManagedProfileHeuristic.get(context, mUser);
@@ -3134,6 +3162,8 @@ public class LauncherModel extends BroadcastReceiver
                     }
                     for (int i = 0; i < N; i++) {
                         if (DEBUG_LOADERS) Log.d(TAG, "mAllAppsList.removePackage " + packages[i]);
+                        FlyLog.i("OP_REMOVE, deletePackageFromDatabase=%s", packages[i]);
+                        deletePackageFromDatabase(context,packages[i],mUser);
                         mIconCache.removeIconsForPkg(packages[i], mUser);
                     }
                     // Fall through
