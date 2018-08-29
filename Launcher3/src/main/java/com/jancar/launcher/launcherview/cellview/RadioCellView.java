@@ -55,7 +55,7 @@ public class RadioCellView extends SimpeCellView {
         super.notifyView();
         AMFM_ImageView.setImageResource(R.drawable.radio_fm);
         KHZMHZ_ImageView.setImageResource(R.drawable.radio_mhz);
-        numTextView.setText("188.88");
+        numTextView.setText("98.88");
 
     }
 }
