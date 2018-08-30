@@ -77,8 +77,6 @@
             android:name="com.jancar.launcher.MainActivity"
             android:clearTaskOnLaunch="true"
             android:enabled="true"
-            android:icon="@mipmap/ic_launcher_round"
-            android:label="@string/app_name"
             android:launchMode="singleTask"
             android:resumeWhilePausing="true"
             android:screenOrientation="landscape"
@@ -100,8 +98,6 @@
             android:name="com.android.launcher3.Launcher"
             android:clearTaskOnLaunch="true"
             android:enabled="true"
-            android:icon="@mipmap/appstore"
-            android:label="@string/app_name2"
             android:launchMode="singleTask"
             android:resumeWhilePausing="true"
             android:screenOrientation="landscape"
@@ -110,9 +106,7 @@
             android:theme="@style/Theme"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
                 <!--<category android:name="android.intent.category.HOME" />-->
-                <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <!--<category android:name="android.intent.category.MONKEY"/>-->
             </intent-filter>

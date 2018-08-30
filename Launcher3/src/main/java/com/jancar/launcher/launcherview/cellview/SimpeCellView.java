@@ -23,7 +23,6 @@ import com.jancar.launcher.launcherview.flyview.FlyImageView;
 import com.jancar.launcher.launcherview.flyview.FlyTextView;
 import com.jancar.launcher.launcherview.flyview.MirrorView;
 import com.jancar.launcher.utils.CommondUtils;
-import com.jancar.launcher.utils.FlyLog;
 
 public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouchListener, View.OnClickListener {
     private CellBean appInfo;
@@ -50,7 +49,6 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
 
     @Override
     public void initView(Context context) {
-        FlyLog.d();
         imageView = new FlyImageView(context);
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         addView(imageView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);

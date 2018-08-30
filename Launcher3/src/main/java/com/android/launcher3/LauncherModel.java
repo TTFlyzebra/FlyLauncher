@@ -204,6 +204,7 @@ public class LauncherModel extends BroadcastReceiver
     final LauncherAppsCompat mLauncherApps;
     @Thunk
     final UserManagerCompat mUserManager;
+    private static final String FIRST_CREATE_DB = "FIRST_CREATE_DB";
 
     public interface Callbacks {
         public boolean setLoadOnResume();
@@ -1624,16 +1625,22 @@ public class LauncherModel extends BroadcastReceiver
                 if (DEBUG_LOADERS) Log.d(TAG, "step 2: loading all apps");
                 loadAndBindAllApps();
 
-                SharedPreferences sp = mContext.getSharedPreferences(LauncherAppState.getSharedPreferencesKey(), Context.MODE_PRIVATE);
-                if (sp.getBoolean(COPY_ALLAPPS, true)) {
-                    FlyLog.d("start copy all apps to workspace");
-                    addScreenAndAddItem(mContext);
-                    updateWorkspaceScreenOrder(mContext, loadWorkspaceScreensDb(mContext));
-                    resetLoadedState(false, true);
-                    startLoaderFromBackground();
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putBoolean(COPY_ALLAPPS, false);
-                    editor.apply();
+
+                allLauncherActivitys = PMUtils.getAppInfos(null,mContext,mIconCache);
+                if(allLauncherActivitys!=null&&!allLauncherActivitys.isEmpty()) {
+                    SharedPreferences sp = mContext.getSharedPreferences(LauncherAppState.getSharedPreferencesKey(), Context.MODE_PRIVATE);
+                    if (sp.getBoolean(FIRST_CREATE_DB, true)) {
+                        FlyLog.d("FIRST_CREATE_DB, start copy all apps to workspace");
+                        checkManagerFavorites(mContext, allLauncherActivitys);
+                        resetLoadedState(false, true);
+                        startLoaderFromBackground();
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putBoolean(FIRST_CREATE_DB, false);
+                        editor.apply();
+                    }else{
+                        //TODO: 对比列表删除数据
+                        chechAndaddFavorites(mContext, allLauncherActivitys);
+                    }
                 }
             }
 
@@ -2982,6 +2989,7 @@ public class LauncherModel extends BroadcastReceiver
         }
     }
 
+
     /**
      * Called when the icons for packages have been updated in the icon cache.
      */
@@ -3163,7 +3171,7 @@ public class LauncherModel extends BroadcastReceiver
                     for (int i = 0; i < N; i++) {
                         if (DEBUG_LOADERS) Log.d(TAG, "mAllAppsList.removePackage " + packages[i]);
                         FlyLog.i("OP_REMOVE, deletePackageFromDatabase=%s", packages[i]);
-                        deletePackageFromDatabase(context,packages[i],mUser);
+                        deletePackageFromDatabase(context, packages[i], mUser);
                         mIconCache.removeIconsForPkg(packages[i], mUser);
                     }
                     // Fall through
@@ -3860,8 +3868,15 @@ public class LauncherModel extends BroadcastReceiver
         return sWorkerThread.getLooper();
     }
 
-    public void addScreenAndAddItem(Context mContext) {
-        int appNum = mBgAllAppsList.size();
+
+    /**
+     * 扫描所有应用并对桌面图标进行删除和添加
+     *
+     * @param mContext
+     */
+    List<AppInfo> allLauncherActivitys ;
+    public void checkManagerFavorites(Context mContext,List<AppInfo> list) {
+        int appNum = list.size();
         int screenNum = (int) Math.ceil((double) appNum / 12);  //这里的30是一个workspace桌面能承载的最大app数量，我改的是平板5x6界面所以是30个，这个数量可以在一个地方获得，我还没整理好偷懒直接写了
         FlyLog.d("copyallapps screenNum=%d", screenNum);
         ContentResolver cr = mContext.getContentResolver();
@@ -3875,19 +3890,43 @@ public class LauncherModel extends BroadcastReceiver
             v.put(LauncherSettings.WorkspaceScreens._ID, i);
             v.put(LauncherSettings.WorkspaceScreens.SCREEN_RANK, i - 1);
             cr.insert(uri, v);
-            additem(mContext, startNum, endNum, i);
+            additem(mContext, startNum, endNum, i,list);
             startNum += 12;
         }
     }
 
-    private static final String COPY_ALLAPPS = "FLY_COPY_ALL_APPS2";
-
-    public void additem(Context mContext, int startNum, int endNum, int screen) {
+    public void additem(Context mContext, int startNum, int endNum, int screen,List<AppInfo> list) {
         FlyLog.d("copyallapps additem startNum=%d,endNum=%d,screen=%d", startNum, endNum, screen);
         for (int i = startNum; i < endNum; i++) {
-            ShortcutInfo shortcutInfo = new ShortcutInfo(mBgAllAppsList.get(i));
+            ShortcutInfo shortcutInfo = new ShortcutInfo(list.get(i));
             FlyLog.d("copyallapps add num=%d screen=%d,cellx=%d,celly=%d,name=%s", i, screen, i % 6, (i % 12) / 6, shortcutInfo.getIntent());
             addItemToDatabase(mContext, shortcutInfo, -100, screen, i % 6, (i % 12) / 6);
         }
     }
+
+    private boolean chechAndaddFavorites(Context mContext, List<AppInfo> allLauncherActivitys) {
+        boolean flag = false;
+        final ContentResolver cr = mContext.getContentResolver();
+        Cursor c = cr.query(LauncherSettings.Favorites.CONTENT_URI, null,null,null, null);
+        Set<String> dbActivitys = new HashSet<>();
+        while (c.moveToNext()){
+            String intent = c.getString(c.getColumnIndexOrThrow(LauncherSettings.Favorites.INTENT));
+            dbActivitys.add(intent);
+        }
+        for(AppInfo appInfo:allLauncherActivitys){
+            String intent = appInfo.intent.toUri(0);
+            if(dbActivitys.contains(intent)){
+               FlyLog.d("%s already added!",appInfo.componentName.getClassName());
+            }else {
+                flag = true;
+//                addAndBindAddedWorkspaceItems();
+                ArrayList<AppInfo> temList = new ArrayList<>();
+                temList.add(appInfo);
+                addAndBindAddedWorkspaceItems(mContext, temList);
+                FlyLog.d("add ClassName=%s",appInfo.componentName.getClassName());
+            }
+        }
+        return flag;
+    }
+
 }

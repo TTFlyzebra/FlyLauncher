@@ -37,7 +37,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
@@ -395,8 +394,6 @@ public class IconCache {
         mIconDb.getWritableDatabase().insertWithOnConflict(IconDB.TABLE_NAME, null, values,
                 SQLiteDatabase.CONFLICT_REPLACE);
     }
-
-    private Handler mHander = new Handler(Looper.getMainLooper());
 
     @Thunk
     ContentValues updateCacheAndGetContentValues(LauncherActivityInfoCompat app,

@@ -11,7 +11,6 @@ import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.bean.PageBean;
 import com.jancar.launcher.launcherview.cellview.CellViewFactory;
 import com.jancar.launcher.launcherview.cellview.ICellView;
-import com.jancar.launcher.utils.FlyLog;
 
 import java.util.List;
 
@@ -38,7 +37,6 @@ public class SimplePageView extends FrameLayout implements IPage {
         ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(dm);
         width = dm.widthPixels;
         height = dm.heightPixels;
-        FlyLog.d("width=%d,height=%d",width,height);
     }
 
     @Override
@@ -65,7 +63,6 @@ public class SimplePageView extends FrameLayout implements IPage {
         if(height!=0){
             sy = (height - (pageBean.itemHeight+pageBean.itemPadding*2) * pageBean.rows) / 2;
         }
-        FlyLog.d("sx=%d,sy=%d",sx,sy);
         for (int i = 0; i < appInfoList.size(); i++) {
             //多出的Cell不进行绘制
             if (i > pageBean.columns * pageBean.rows) break;

@@ -14,6 +14,7 @@ import com.android.launcher3.compat.LauncherActivityInfoCompat;
 import com.android.launcher3.compat.LauncherAppsCompat;
 import com.android.launcher3.compat.UserHandleCompat;
 import com.android.launcher3.compat.UserManagerCompat;
+import com.jancar.launcher.data.Const;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,19 @@ public class PMUtils {
             List<LauncherActivityInfoCompat> addList = mLauncherApps.getActivityList(packageName, userHandle);
             if (addList != null) {
                 for(LauncherActivityInfoCompat info:addList){
+                    /**
+                     * 过滤掉包名列表
+                     */
+                    boolean flag = false;
+                    for(String packName:Const.FILTER_PACKNAMES){
+                        if(packName.indexOf(info.getComponentName().getPackageName())==0){
+                            FlyLog.d("FILTER_PACKNAMES packName=%s,className=%s",
+                                    info.getComponentName().getPackageName(),info.getComponentName().getClassName());
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if(flag) continue;
                     retList.add((new AppInfo(context, info, userHandle, iconCache)));
                 }
             }
