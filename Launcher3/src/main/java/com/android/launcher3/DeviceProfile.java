@@ -98,8 +98,8 @@ public class DeviceProfile {
     private int searchBarSpaceHeightPx;
 
     public DeviceProfile(Context context, InvariantDeviceProfile inv,
-            Point minSize, Point maxSize,
-            int width, int height, boolean isLandscape) {
+                         Point minSize, Point maxSize,
+                         int width, int height, boolean isLandscape) {
 
         this.inv = inv;
         this.isLandscape = isLandscape;
@@ -274,7 +274,7 @@ public class DeviceProfile {
                 bounds.set(desiredWorkspaceLeftRightMarginPx - defaultWidgetPadding.left,
                         getSearchBarTopOffset(),
                         availableWidthPx - (desiredWorkspaceLeftRightMarginPx -
-                        defaultWidgetPadding.right), searchBarSpaceHeightPx);
+                                defaultWidgetPadding.right), searchBarSpaceHeightPx);
             }
         }
         return bounds;
@@ -378,6 +378,11 @@ public class DeviceProfile {
         return visibleChildren;
     }
 
+
+    /**
+     * @FlyZebra 修改主界面各模块的布局位置
+     * @param launcher
+     */
     public void layout(Launcher launcher) {
         FrameLayout.LayoutParams lp;
         boolean hasVerticalBarLayout = isVerticalBarLayout();
@@ -421,47 +426,50 @@ public class DeviceProfile {
         // Layout the hotseat
         View hotseat = launcher.findViewById(R.id.hotseat);
         lp = (FrameLayout.LayoutParams) hotseat.getLayoutParams();
-        if (hasVerticalBarLayout) {
-            // Vertical hotseat -- The hotseat is fixed in the layout to be on the right of the
-            //                     screen regardless of RTL
-            lp.gravity = Gravity.RIGHT;
-            lp.width = hotseatBarHeightPx;
-            lp.height = LayoutParams.MATCH_PARENT;
-            hotseat.findViewById(R.id.layout).setPadding(0, 2 * edgeMarginPx, 0, 2 * edgeMarginPx);
-        } else if (isTablet) {
-            // Pad the hotseat with the workspace padding calculated above
-            lp.gravity = Gravity.BOTTOM;
-            lp.width = LayoutParams.MATCH_PARENT;
-            lp.height = hotseatBarHeightPx;
-            hotseat.setPadding(edgeMarginPx + padding.left, 0,
-                    edgeMarginPx + padding.right,
-                    2 * edgeMarginPx);
-        } else {
-            // For phones, layout the hotseat without any bottom margin
-            // to ensure that we have space for the folders
-            lp.gravity = Gravity.BOTTOM;
-            lp.width = LayoutParams.MATCH_PARENT;
-            lp.height = hotseatBarHeightPx;
-            hotseat.findViewById(R.id.layout).setPadding(2 * edgeMarginPx, 0,
-                    2 * edgeMarginPx, 0);
-        }
+//        if (hasVerticalBarLayout) {
+//            // Vertical hotseat -- The hotseat is fixed in the layout to be on the right of the
+//            //                     screen regardless of RTL
+//            lp.gravity = Gravity.RIGHT;
+//            lp.width = hotseatBarHeightPx;
+//            lp.height = LayoutParams.MATCH_PARENT;
+//            hotseat.findViewById(R.id.layout).setPadding(0, 2 * edgeMarginPx, 0, 2 * edgeMarginPx);
+//        } else if (isTablet) {
+//            // Pad the hotseat with the workspace padding calculated above
+//            lp.gravity = Gravity.BOTTOM;
+//            lp.width = LayoutParams.MATCH_PARENT;
+//            lp.height = hotseatBarHeightPx;
+//            hotseat.setPadding(edgeMarginPx + padding.left, 0,
+//                    edgeMarginPx + padding.right,
+//                    2 * edgeMarginPx);
+//        } else {
+//            // For phones, layout the hotseat without any bottom margin
+//            // to ensure that we have space for the folders
+//            lp.gravity = Gravity.BOTTOM;
+//            lp.width = LayoutParams.MATCH_PARENT;
+//            lp.height = hotseatBarHeightPx;
+//            hotseat.findViewById(R.id.layout).setPadding(2 * edgeMarginPx, 0,
+//                    2 * edgeMarginPx, 0);
+//        }
+        lp.gravity = Gravity.CENTER|Gravity.CENTER;
+        lp.width = 1;
+        lp.height = 1;
         hotseat.setLayoutParams(lp);
 
         // Layout the page indicators
         View pageIndicator = launcher.findViewById(R.id.page_indicator);
         if (pageIndicator != null) {
-            if (hasVerticalBarLayout) {
-                // Hide the page indicators when we have vertical search/hotseat
-                pageIndicator.setVisibility(View.GONE);
-            } else {
-                // Put the page indicators above the hotseat
-                lp = (FrameLayout.LayoutParams) pageIndicator.getLayoutParams();
-                lp.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
-                lp.width = LayoutParams.WRAP_CONTENT;
-                lp.height = LayoutParams.WRAP_CONTENT;
-                lp.bottomMargin = hotseatBarHeightPx;
-                pageIndicator.setLayoutParams(lp);
-            }
+//            if (hasVerticalBarLayout) {
+//                // Hide the page indicators when we have vertical search/hotseat
+//                pageIndicator.setVisibility(View.GONE);
+//            } else {
+            // Put the page indicators above the hotseat
+            lp = (FrameLayout.LayoutParams) pageIndicator.getLayoutParams();
+            lp.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
+            lp.width = LayoutParams.WRAP_CONTENT;
+            lp.height = LayoutParams.WRAP_CONTENT;
+            lp.bottomMargin = 48;
+            pageIndicator.setLayoutParams(lp);
+//            }
         }
 
         // Layout the Overview Mode

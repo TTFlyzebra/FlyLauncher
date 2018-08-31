@@ -18,7 +18,7 @@ import com.android.launcher3.compat.UserManagerCompat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PMUtils {
+public class ActivityInfoUtils {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private static List<UserHandle> getUserProfiles(Context context) {

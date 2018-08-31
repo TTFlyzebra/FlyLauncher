@@ -17,7 +17,6 @@
 package com.android.launcher3;
 
 import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -38,7 +37,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
@@ -51,9 +49,7 @@ import com.android.launcher3.model.PackageItemInfo;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.Thunk;
 import com.flyzebra.utils.FlyLog;
-import com.flyzebra.utils.PMUtils;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -382,37 +378,9 @@ public class IconCache {
         values.put(IconDB.COLUMN_VERSION, info.versionCode);
         FlyLog.d(values.toString());
         FlyLog.d("addIconToDB packName=%s", info.packageName);
-
-        ArrayList<AppInfo> list = (ArrayList<AppInfo>) PMUtils.getAppInfos(info.packageName, mContext, this);
-
-        if (list != null && !list.isEmpty()) {
-//        LauncherModel.addItemToDatabase(mContext,new ShortcutInfo(list.get(0)),-100,2,5,1);
-//        Launcher launcher = (Launcher) mContext;
-//        launcher.getModel().resetLoadedState(false, true);
-//        launcher.getModel().startLoaderFromBackground();
-
-            LauncherAppState app = LauncherAppState.getInstance();
-            LauncherModel model = app.getModel();
-            final ContentResolver cr = mContext.getContentResolver();
-            int sum = list.size();
-            for (int i = sum - 1; i >= 0; i--) {
-                Intent intent = list.get(i).intent;
-                String uri = (intent != null ? intent.toUri(0) : null);
-                Cursor c = cr.query(LauncherSettings.Favorites.CONTENT_URI, null,
-                        "intent = " + uri,
-                        null, null);
-                if (c.moveToNext()) {
-                    list.remove(i);
-                }
-            }
-            model.addAndBindAddedWorkspaceItems(mContext, list);
-        }
-
         mIconDb.getWritableDatabase().insertWithOnConflict(IconDB.TABLE_NAME, null, values,
                 SQLiteDatabase.CONFLICT_REPLACE);
     }
-
-    private Handler mHander = new Handler(Looper.getMainLooper());
 
     @Thunk
     ContentValues updateCacheAndGetContentValues(LauncherActivityInfoCompat app,

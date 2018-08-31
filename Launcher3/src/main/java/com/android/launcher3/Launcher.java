@@ -542,14 +542,14 @@ public class Launcher extends Activity
         }
 
 
-        if (shouldShowIntroScreen()) {
-            showIntroScreen();
-        } else {
-            showFirstRunActivity();
+//        if (shouldShowIntroScreen()) {
+//            showIntroScreen();
+//        } else {
+//            showFirstRunActivity();
 //            showFirstRunClings();
-        }
-        LauncherModel model = getModel();
-        model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_NONE);
+//        }
+//        LauncherModel model = getModel();
+//        model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_NONE);
 
     }
 
@@ -3882,7 +3882,7 @@ public class Launcher extends Activity
                     throw new RuntimeException("Invalid Item Type");
             }
 
-            FlyLog.d("add view,container=%d,screenId=%d,cellX=%d,cellY=%d",
+            FlyLog.d("workspace add view,container=%d,screenId=%d,cellX=%d,cellY=%d",
                     item.container, item.screenId, item.cellX, item.cellY);
 
             workspace.addInScreenFromBind(view, item.container, item.screenId, item.cellX,

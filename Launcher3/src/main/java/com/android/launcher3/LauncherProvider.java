@@ -56,6 +56,7 @@ import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.config.ProviderConfig;
 import com.android.launcher3.util.ManagedProfileHeuristic;
 import com.android.launcher3.util.Thunk;
+import com.flyzebra.utils.FlyLog;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -134,6 +135,9 @@ public class LauncherProvider extends ContentProvider {
             throw new RuntimeException("Error: attempting to add item without specifying an id");
         }
         helper.checkId(table, values);
+        if(values.get("screen")!=null){
+            FlyLog.d("dbInsertAndCheck--:2 screen="+values.get("screen")+",title="+values.get("title"));
+        }
         return db.insert(table, nullColumnHack, values);
     }
 
@@ -156,7 +160,6 @@ public class LauncherProvider extends ContentProvider {
                 return null;
             }
         }
-
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         addModifiedTime(initialValues);
         final long rowId = dbInsertAndCheck(mOpenHelper, db, args.table, null, initialValues);

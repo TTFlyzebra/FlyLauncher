@@ -1,9 +1,11 @@
 package com.jancar.launcher.bean;
 
 public class CellBean implements Cloneable{
+    public String jancar = "";
     public String packName = "com.android.launcher3";
     public String className = "com.android.launcher3.Launcher";
     public String action = "";
+    public String intentFlag = "0x10200000";
     public String defaultImageUrl = "file:///android_asset/image/page01_default_1.png";
     public String focusImageUrl="file:///android_asset/image/page01_focus_1.png";
     public int type = 1;
